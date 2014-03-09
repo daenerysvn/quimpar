@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.ReferenciaDAO">
+  
+  <sql id="selectTipoInscripcion">
+    select tipo, 
+          tipo_descripcion tipoDescripcion, 
+          categoria_tage categoriaTage, 
+          estado
+   from v_tipo_inscripcion_rpvaa
+   where estado = 'A'
+  </sql>
+  
+  <select id="listDistinctTiposInscripcion" resultType="tipoInscripcionDTO">
+    select distinct tipo, tipo_descripcion tipoDescripcion
+   	 from v_tipo_inscripcion_rpvaa
+   	 where estado = 'A'
+  </select>
+  
+  <select id="listTiposInscripcionByTipo" resultType="tipoInscripcionDTO" parameterType="string">
+    <include refid="selectTipoInscripcion"/>
+    and tipo = #{tipo}
+  </select>
+
+</mapper>

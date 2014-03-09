@@ -1,0 +1,70 @@
+<h:form id="MenuForm"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:rich="http://richfaces.org/rich">
+	
+	<rich:toolBar id="MenuBar" styleClass="menuBar">
+	    
+	    <rich:dropDownMenu value="Configuración" rendered="#{identity.hasRole('grpmnu:config')}">
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:application')}">
+	    		<s:link view="/administracion/aplicaciones.xhtml" value="Admin. Aplicaciones">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:admintemplate')}">
+	    		<s:link view="/administracion/adminTemplate.xhtml" value="Admin. Template">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    </rich:dropDownMenu>
+	    <rich:dropDownMenu value="Gestión" rendered="#{identity.hasRole('grpmnu:manage')}">	
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:user')}">
+	    	    <s:link view="/usuarios/adminUsuarios.xhtml" value="Gestionar Usuarios">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:uservalidate')}">
+	    	    <s:link view="/gestion/adminVigencias.xhtml" value="Gestionar Vigencias">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:massiveload')}">
+	    	    <s:link view="/usuarios/cargaMasiva.xhtml" value="Ejecutar Template">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	   	 </rich:dropDownMenu>
+	   	 <rich:dropDownMenu value="Consultas" rendered="#{identity.hasRole('grpmnu:query')}">
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:appusersquery')}">
+	    	    <s:link view="/consultas/usuariosPorApp.xhtml" value="Usuarios por Aplicación">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    </rich:dropDownMenu> 
+	    
+	
+	                       <!-- cabecera -->
+		<rich:toolBarGroup location="right">
+			<h:outputText 
+				id="MenuWelcomeId"
+				value="usuario: #{credentials.username}"
+				rendered="#{identity.loggedIn}" />
+			<h:outputText value="#{boundaryHelper.obtenerNodeName()}" />
+			<h:outputText value="#{currentDatetime}">
+				<s:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+			</h:outputText>
+			<s:link id="menuHomeId" view="/home.xhtml" value="Home" propagation="none"/>
+			<s:link 
+				id="MenuLoginId" view="/login.xhtml" value="Conectarse"
+				rendered="#{not identity.loggedIn}" propagation="none" />	
+			<s:link 
+				id="MenuLogoutId" view="/home.xhtml"
+				action="#{ssoAuthenticator.logout()}" value="Desconectarse"
+				rendered="#{identity.loggedIn}" propagation="none" />
+		</rich:toolBarGroup>
+    </rich:toolBar>
+    
+</h:form>

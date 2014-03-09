@@ -1,0 +1,54 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:s="http://jboss.com/products/seam/taglib"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:rich="http://richfaces.org/rich"
+    xmlns:a4j="http://richfaces.org/a4j"
+    template="layout/template.xhtml">
+
+<script type="text/javascript">
+  	Window.onload = clearCaptchaField();
+</script>
+
+<ui:define name="body">
+
+    <h:form id="LoginForm" styleClass="login">
+
+			<rich:panel id="LoginFormPnl" styleClass="fPnl" style="width:500px; margin-left: auto; margin-right:auto; margin-top:5px;">
+				<f:facet name="header">
+					<h:outputText value="Ingreso al Sistema" />
+				</f:facet>
+				<div class="t-row">
+					<div class="t-row">
+						<div class="lbl-lp w70"><h:outputText value="#{messages['slca.user']}" /></div>
+						<h:inputText
+							  styleClass="input"
+							  id="username"
+                              value="#{credentials.username}"
+                              required="true"
+							  requiredMessage="Favor ingrese su nombre de usuario"/>
+							  <rich:message for="username"></rich:message>
+					</div>
+					<div class="t-row">
+						<div class="lbl-lp w70"><h:outputText value="#{messages['slca.pass']}" /></div>
+						<h:inputSecret 
+								styleClass="input"
+								id="password"
+                                value="#{credentials.password}"
+                                required="true"
+							    requiredMessage="Favor ingrese su clave"/>
+							    <rich:message for="password"></rich:message>
+					</div>
+				</div>
+		        <div class="actionButtons">
+		            <h:commandButton id="submit" value="#{messages['slca.login']}" action="#{identity.login}"/>
+		        </div>
+			</rich:panel>
+
+    </h:form>
+
+ </ui:define>
+</ui:composition>

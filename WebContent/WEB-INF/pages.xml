@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pages xmlns="http://jboss.com/products/seam/pages"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://jboss.com/products/seam/pages http://jboss.com/products/seam/pages-2.1.xsd"
+       no-conversation-view-id="/home.xhtml">
+
+<!--     <page view-id="*" action="#{ssoAuthenticator.checkLogin()}" login-required="false"/> -->
+	
+	<page view-id="/home.xhtml" login-required="false"/>
+    
+    <page view-id="/administracion/aplicaciones.xhtml">
+        <action execute="#{aplicationManager.initInfo()}"/> 
+        <param name="initVar" value="#{aplicationManager.initVar}" />
+        <navigation>
+        	<rule if-outcome="idAdFunc">
+        		<redirect view-id="/administracion/adminFuncionalidades.xhtml" />
+        	</rule>
+        </navigation>
+    </page>
+    
+    <page view-id="/administracion/adminFuncionalidades.xhtml">
+        <action execute="#{adminFuncionalidades.initInfo()}"/>
+		<param name="idApp" value="#{adminFuncionalidades.idApp}" />
+		<param name="initVar" value="#{adminFuncionalidades.initVar}" />
+		<param name="estado" value="#{adminFuncionalidades.estado}" />
+		<param name="descripParam" value="#{adminFuncionalidades.descripcion}" />
+		<param name="codigo" value="#{adminFuncionalidades.codigo}" />
+		<navigation>
+        	<rule if-outcome="idAdApp">
+        		<redirect view-id="/administracion/aplicaciones.xhtml" />
+        	</rule>
+        </navigation>
+    </page>
+    
+    <page view-id="/administracion/adminRoles.xhtml">
+        <action execute="#{adminRoles.initInfo()}"/>
+		<param name="idApp" value="#{adminRoles.idApp}" />
+		<param name="initVar" value="#{adminRoles.initVar}" />
+		<param name="estado" value="#{adminRoles.estado}" />
+		<param name="descripParam" value="#{adminRoles.descripcion}" />
+		<param name="codigo" value="#{adminRoles.app}" />
+		<navigation>
+        	<rule if-outcome="application2">
+        		<redirect view-id="/administracion/aplicaciones.xhtml" />
+        	</rule>
+        </navigation>
+    </page>
+    
+    <page view-id="/usuarios/adminUsuarios.xhtml">
+        <action execute="#{adminUsuarios.initInfo()}"/>
+        <param name="initVar" value="#{adminUsuarios.initVar}" />
+    </page>
+    
+    <page view-id="/gestion/adminVigencias.xhtml">
+        <action execute="#{adminVigencias.initInfo()}"/>
+        <param name="initVar" value="#{adminVigencias.initVar}" />
+    </page>
+    
+    <page view-id="/administracion/adminTemplate.xhtml">
+        <action execute="#{adminTemplate.initInfo()}"/>
+        <param name="initVar" value="#{adminTemplate.initVar}" />
+    </page>
+    
+    <page view-id="/usuarios/cargaMasiva.xhtml">
+        <action execute="#{massive.initInfo()}"/>
+        <param name="initVar" value="#{massive.initVar}" />
+        <param name="template" value="#{massive.template}" />
+        <param name="action" value="#{massive.action}"/>
+  		<param name="descAction" value="#{massive.descAction}"/>
+        <navigation>
+		   <rule if-outcome="adminTemp">
+		    <end-conversation/>
+		    <redirect view-id="/administracion/adminTemplate.xhtml"/>
+		   </rule>
+		</navigation>
+    </page>
+    
+    <page view-id="/consultas/usuariosPorApp.xhtml">
+        <action execute="#{usuariosPorApp.initInfo()}"/>
+        <param name="initVar" value="#{usuariosPorApp.initVar}" />
+    </page>
+
+    <exception class="org.jboss.seam.framework.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityNotFoundException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Record not found</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.EntityExistsException">
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Duplicate record</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.persistence.OptimisticLockException">
+        <end-conversation/>
+        <redirect view-id="/error.xhtml">
+            <message severity="warn">Another user changed the same data, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.AuthorizationException">
+        <redirect view-id="/error.xhtml">
+            <message severity="error">You don't have permission to access this resource</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.security.NotLoggedInException">
+        <redirect view-id="/login.xhtml">
+            <message severity="warn">#{messages['org.jboss.seam.NotLoggedIn']}</message>
+        </redirect>
+    </exception>
+    
+    <exception class="javax.faces.application.ViewExpiredException">
+        <redirect view-id="/login.xhtml">
+            <message severity="warn">Your session has timed out, please try again</message>
+        </redirect>
+    </exception>
+    
+    <exception class="org.jboss.seam.ConcurrentRequestTimeoutException" log-level="trace">
+      <http-error error-code="503" />
+    </exception>
+     
+    <exception>
+        <redirect view-id="/error.xhtml">
+            <message severity="error">Unexpected error, please try again</message>
+        </redirect>
+    </exception>
+    
+</pages>

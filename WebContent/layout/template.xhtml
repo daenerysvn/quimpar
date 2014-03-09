@@ -1,0 +1,104 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
+   xmlns:h="http://java.sun.com/jsf/html"
+   xmlns:a4j="http://richfaces.org/a4j"
+   xmlns:rich="http://richfaces.org/rich"
+   xmlns:s="http://jboss.com/products/seam/taglib"
+   contentType="text/html">
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+      <title>Servicio de Administración de Recursos y Usuarios</title>
+      <link rel="shortcut icon" href="#{request.contextPath}/favicon.ico"/>
+      <a4j:loadStyle src="resource:///stylesheet/theme.xcss"/>
+      <a4j:loadStyle src="/stylesheet/theme.css"/>
+      <ui:insert name="head"/>
+   </head>
+   
+  <script type="text/javascript">  
+        function ajaxRequestContainsErrors() {
+                return document.getElementById("maximumSeverity").value == "2";
+        }
+        function closeModalPanel(panelId) {
+                if (!ajaxRequestContainsErrors()){ 
+                        Richfaces.hideModalPanel(panelId);
+                }else{
+                        Richfaces.showModalPanel(panelId);
+                }
+        }
+
+
+        var waitDialogShown = false;
+        var useTimerBeforeShowWaitDialog = true;
+        var waitDialogTimeout = 50;
+        var waitDialogTimer = false;
+         
+        function showWaitDialog() {
+            //avoid attempt to show it if it is already shown
+            if (!waitDialogShown) {
+                Richfaces.showModalPanel('WaitDialog');
+                waitDialogShown = true;
+            }
+        }
+         
+        function onRequestStart() {
+            if (useTimerBeforeShowWaitDialog) {
+                waitDialogTimer = setTimeout("showWaitDialog();", waitDialogTimeout);
+            } else {
+                showWaitDialog();
+            }
+        }
+        function onRequestEnd() {
+            if (waitDialogShown) {
+                Richfaces.hideModalPanel('WaitDialog');
+                waitDialogShown = false;
+            } else if (useTimerBeforeShowWaitDialog &amp;&amp; waitDialogTimer) {
+                clearTimeout(waitDialogTimer);
+            }
+        }
+        function printObjectsSelected(output, sgcomponent){
+            output.innerHTML=sgcomponent.getSelectedItems().pluck('commonName');
+        }
+</script>
+   
+   <body>
+      <table width="100%" bgcolor="#666666">
+			<tr>	
+				<td width="100" align="left"><h:graphicImage value="/img/logo/logo_dna_small.png" width="120" height="70"></h:graphicImage></td>
+			</tr>	
+	  </table>
+      <ui:include src="menu.xhtml">
+         <ui:param name="projectName" value="saru"/>
+      </ui:include>
+      <div class="body">
+        	<a4j:outputPanel ajaxRendered="true">
+				<h:messages id="GlobalMsg" globalOnly="true" styleClass="message"
+					errorClass="errormsg" infoClass="infomsg" warnClass="warnmsg" fatalClass="errormsg"
+					rendered="#{showGlobalMessages != 'false'}" />
+			</a4j:outputPanel>
+            <ui:insert name="body"/>
+            <rich:modalPanel 
+			 	id="WaitDialog" 
+			 	resizeable="false"
+				autosized="false" 
+				width="280" 
+				height="75" 
+				moveable="false"
+				shadowOpacity="0" 
+				styleClass="waitDialog">
+				<h:graphicImage 
+					value="../img/ajax/procesando.gif"
+					style="float:left; padding-right:10px;" />
+					 <s:transformImageSize width="100" maintainRatio="true"/>
+				<rich:progressBar></rich:progressBar>
+			</rich:modalPanel>
+      </div>
+     <div class="footer" align="center">
+		DNA Paraguay - Servicio de Administración de Recursos y Usuarios 1.2
+	</div>
+   </body>
+</html>
+</f:view>

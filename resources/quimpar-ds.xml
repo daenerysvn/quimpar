@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE datasources
+    PUBLIC "-//JBoss//DTD JBOSS JCA Config 1.5//EN"
+    "http://www.jboss.org/j2ee/dtd/jboss-ds_1_5.dtd">
+<datasources>
+   <no-tx-datasource>
+      <jndi-name>quimparDS</jndi-name>
+      <use-java-context>true</use-java-context>
+      <connection-url>jdbc:postgresql://localhost:5432/quimpar</connection-url>
+      <driver-class>org.postgresql.Driver</driver-class>
+	<user-name>quimpar</user-name>
+	<password>quimpar</password>
+	<metadata>  
+            <type-mapping>PostgreSQL</type-mapping>  
+        </metadata>
+   </no-tx-datasource>
+</datasources>

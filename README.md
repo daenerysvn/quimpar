@@ -1,4 +1,0 @@
-quimpar
-=======
-
-quimpar

@@ -1,4 +1,4 @@
-<project name="pvaa-rest" default="deploy" 
+<project name="quimpar" default="deploy" 
 	xmlns:ivy="antlib:org.apache.ivy.ant"
 	xmlns:cs="antlib:com.puppycrawl.tools.checkstyle"	
 	>
@@ -15,37 +15,11 @@
 	
 
 	<!-- CONFIGURATION. DON'T EDIT AFTER THIS LINE -->
-	<!-- ivy -->
-	<!-- resolve task -->
-	<target name="ivy-resolve">
-		<ivy:configure file="./ivysettings.xml" override="true" />
-		<ivy:resolve file="./ivy.xml" conf="*" resolveid="resolved.classpath"  />
-		<ivy:cachefileset setid="ivy.cache.filelist" conf="*" />
-	</target>
-	<target name="ivy-clean-cache">
-		<ivy:cleancache/>
-	</target>
-	<!-- end ivy -->
-
-	
 
 	<!-- jboss properties -->
-	
 	<property name="jboss.home" value="${env.JBOSS_HOME_510}" />
 	<property name="jboss.deploy.dir" value="${jboss.home}/server/default/deploy" />
 	<!-- end jboss properties -->
-
-
-	<!-- checkstyle -->
-	<target name="checkstyle">
-		<cs:checkstyle config="sun_checks.xml"
-			failureProperty="checkstyle.failure"
-			failOnViolation="false">
-			<formatter type="xml" tofile="${distdir}/checkstyle_report.xml" />
-			<fileset dir="${srcdir}" includes="**/*.java" />
-		</cs:checkstyle>
-	</target>
-	<!-- end checkstyle -->
 
 
 	<!-- CONFIGURATION END. DON'T EDIT BELOW THIS LINE -->
@@ -57,6 +31,7 @@
 	<property name="dist" value="dist" />
 	<property name="lib" value="lib" />
 	<property name="resource" value="resources" />
+	<property name="webdirname" value="WebContent" />
 	<!-- end application properties -->
 
 
@@ -67,6 +42,8 @@
 	<property name="distdir" location="${appdir}/${dist}" />
 	<property name="distdir.lib" location="${distdir}/${lib}" />
 	<property name="resourcedir" location="${appdir}/${resource}" />
+	<property name="libdir" location="${appdir}/${lib}" />
+	<property name="webdir" location="${appdir}/${webdirname}" />
 
 	<!-- artifact configuration -->
 	<property name="version" value="${implementation.version}" />
@@ -84,18 +61,20 @@
 
 
 	<!-- application builder -->
-	<target name="compile" depends="ivy-resolve, clean" >
+	<target name="compile" depends="clean" >
 		<mkdir dir="${bindir}"/>
 		<mkdir dir="${distdir}"/>
 		<mkdir dir="${distdir.lib}"/>
 
-		<ivy:retrieve pattern="${distdir.lib}/[type]/[artifact]-[revision].[ext]" resolveid="resolved.classpath"  type="jar, bundle" conf="runtime"/>
-
 		<javac srcdir="${srcdir}" destdir="${bindir}" includeantruntime="false" failonerror="true" debug="true" debuglevel="lines,vars,source" deprecation="on" >
-
 			<classpath>
-				<fileset refid="ivy.cache.filelist" />
-			</classpath>
+                <fileset dir="${libdir}">
+                    <include name="*.jar" />
+                </fileset>
+				<fileset dir="${distdir.lib}">
+                    <include name="*.jar" />
+                </fileset>
+            </classpath>
 		</javac>
 	</target>
 
@@ -104,23 +83,17 @@
 		
 		<buildnumber file="version.properties"/>
 		
-		<war destfile="${distdir}/${artifactdest}" webxml="${appdir}/WEB-INF/web.xml" >
+		<war destfile="${distdir}/${artifactdest}" webxml="${webdir}/WEB-INF/web.xml" >
 			<zipfileset dir="${bindir}" includes="**/*.class" prefix="WEB-INF/classes" />
-			<zipfileset dir="${distdir.lib}/jar" includes="**/*.jar" prefix="WEB-INF/lib" />
-			<!--zipfileset dir="${distdir.lib}/bundle" includes="**/*.jar" prefix="WEB-INF/lib" /-->
+			<zipfileset dir="${libdir}" includes="**/*.jar" prefix="WEB-INF/lib" />
 			<zipfileset dir="${srcdir}" includes="**/*.xml" prefix="WEB-INF/classes" />
-			<!--<zipfileset dir="${resourcedir}/rules" includes="**/*.drl" prefix="WEB-INF/classes" />-->
 			<zipfileset dir="${resourcedir}" includes="**/*.xsd" prefix="WEB-INF/classes/resources" />
 			<zipfileset dir="${resourcedir}" includes="logback.xml, *.png, *.bmp" prefix="WEB-INF/classes" />
-			<zipfileset dir="${appdir}/WEB-INF" includes="jboss-web.xml, jboss-deployment-structure.xml" prefix="WEB-INF" />
-			<!--<zipfileset dir="${resourcedir}" includes="shiro.ini" prefix="WEB-INF/classes" />-->
-			
-			<zipfileset dir="${resourcedir}/messages" includes="*.properties" prefix="WEB-INF/classes" />
-			
+			<zipfileset dir="${webdir}/WEB-INF" includes="jboss-web.xml, jboss-deployment-structure.xml" prefix="WEB-INF" />
+			<zipfileset dir="${resourcedir}" includes="*.properties" prefix="WEB-INF/classes" />
 			<zipfileset dir="." includes="version.properties, build.properties" prefix="WEB-INF/classes" />
-			
-			<zipfileset dir="${appdir}/WEB-INF" includes="applicationContext.xml" prefix="WEB-INF" />
-			
+			<zipfileset dir="${webdir}/WEB-INF" includes="applicationContext.xml" prefix="WEB-INF" />
+			<zipfileset dir="${webdir}" includes="**/*.*" excludes="**/jndi.properties, **/*.jar, **/web.xml" />
 		</war>
 
 		<zip destfile="${distdir}/${srcdest}">
@@ -156,7 +129,6 @@
 		<delete>
 			<fileset dir="${jboss.deploy.dir}">
 				<include name="${artifactdest}"/>
-
 			</fileset>
 		</delete>
 	</target>
@@ -170,7 +142,7 @@
 	</target>
 
 
-	<target name="java-doc" depends="ivy-resolve">
+	<target name="java-doc">
 		<mkdir dir="${distdir}/doc"/>
 		<javadoc 	sourcepath="${srcdir}"
 		            destdir="${distdir}/doc"		            
@@ -179,10 +151,6 @@
 		            use="true"
 		            windowtitle="${appname} API"
 		            doctitle="&lt;h1&gt;${appname}&lt;/h1&gt;">
-
-			<classpath>
-				<fileset refid="ivy.cache.filelist" />
-			</classpath>
 		</javadoc>
 	</target>
 

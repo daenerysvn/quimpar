@@ -27,7 +27,7 @@
 						<h:inputText
 							  styleClass="input"
 							  id="username"
-                              value="#{credentials.username}"
+                              value="#{identity.username}"
                               required="true"
 							  requiredMessage="Favor ingrese su nombre de usuario"/>
 							  <rich:message for="username"></rich:message>
@@ -37,7 +37,7 @@
 						<h:inputSecret 
 								styleClass="input"
 								id="password"
-                                value="#{credentials.password}"
+                                value="#{identity.password}"
                                 required="true"
 							    requiredMessage="Favor ingrese su clave"/>
 							    <rich:message for="password"></rich:message>

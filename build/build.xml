@@ -80,20 +80,27 @@
 
 	<target name="packaging" depends="compile">
 		
-		
 		<buildnumber file="version.properties"/>
 		
 		<war destfile="${distdir}/${artifactdest}" webxml="${webdir}/WEB-INF/web.xml" >
 			<zipfileset dir="${bindir}" includes="**/*.class" prefix="WEB-INF/classes" />
-			<zipfileset dir="${libdir}" includes="**/*.jar" prefix="WEB-INF/lib" />
+			<zipfileset dir="${resourcedir}" includes="**/*" prefix="WEB-INF/classes" />
+			<zipfileset dir="${libdir}" includes="**/*.jar" excludes="**/jsf-api*.jar, **/jsf-impl*.jar, **/hibernate*.jar, **/servlet-api*.jar" prefix="WEB-INF/lib" />
+			<!--<zipfileset dir="${distdir.lib}" includes="**/*.jar" prefix="WEB-INF/lib" />-->
 			<zipfileset dir="${srcdir}" includes="**/*.xml" prefix="WEB-INF/classes" />
-			<zipfileset dir="${resourcedir}" includes="**/*.xsd" prefix="WEB-INF/classes/resources" />
-			<zipfileset dir="${resourcedir}" includes="logback.xml, *.png, *.bmp" prefix="WEB-INF/classes" />
 			<zipfileset dir="${webdir}/WEB-INF" includes="jboss-web.xml, jboss-deployment-structure.xml" prefix="WEB-INF" />
-			<zipfileset dir="${resourcedir}" includes="*.properties" prefix="WEB-INF/classes" />
-			<zipfileset dir="." includes="version.properties, build.properties" prefix="WEB-INF/classes" />
+						
 			<zipfileset dir="${webdir}/WEB-INF" includes="applicationContext.xml" prefix="WEB-INF" />
 			<zipfileset dir="${webdir}" includes="**/*.*" excludes="**/jndi.properties, **/*.jar, **/web.xml" />
+			
+			<zipfileset dir="." includes="version.properties, build.properties" prefix="WEB-INF/classes" />
+			
+			<manifest>
+				<attribute name="Built-By" value="${user.name}"/>
+				<attribute name="Built-Date" value="${TODAY}"/>
+				<attribute name="Implementation-Version" value="${implementation.version}"/>
+				<attribute name="Implementation-Vendor" value="${implementation.vendor}"/>
+			</manifest>
 		</war>
 
 		<zip destfile="${distdir}/${srcdest}">

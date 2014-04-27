@@ -14,7 +14,7 @@
 		</navigation>
 	</page>
 	
-<!-- 	<page view-id="/home.xhtml" login-required="false"/> -->
+	<page view-id="/home.xhtml" login-required="false"/>
     
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">

@@ -34,15 +34,90 @@
 	</bean>
 		
 	<!-- DAO's -->	
-	<bean id="referenciaDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.ReferenciaDAO" />
+	<bean id="clientesDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.ClientesDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="comprasDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.ComprasDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="detalleComprasDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.DetalleComprasDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="detallePresupuestosDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.DetallePresupuestosDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="detalleVentasDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.DetalleVentasDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="fraccionamienoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.FraccionamienoDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="presupuestosDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.PresupuestosDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>	
+	<bean id="productosDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.ProductosDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="proveedoresDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.ProveedoresDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="sectorDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.SectorDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="stockDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.StockDAO" />
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+	</bean>
+	<bean id="ventasDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.VentasDAO" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	
-	
 	<!-- SERVICES  -->	
-	<bean id="referenciaService" class="py.com.quimpar.web.services.dao.impl.ReferenciaServiceImpl">
-		<property name="referenciaDAO"><ref bean="referenciaDAO" /></property>
+	<bean id="clientesService" class="py.com.quimpar.services.impl.ClientesServiceImpl">
+		<property name="clientesDAO"><ref bean="clientesDAO" /></property>
 	</bean>
-
+<!-- 	<bean id="comprasService" class="py.com.quimpar.web.services.impl.ComprasServiceImpl"> -->
+<!-- 		<property name="comprasDAO"><ref bean="comprasDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="detalleComprasService" class="py.com.quimpar.web.services.impl.DetalleComprasServiceImpl"> -->
+<!-- 		<property name="detalleComprasDAO"><ref bean="detalleComprasDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="detallePresupuestosService" class="py.com.quimpar.web.services.impl.DetallePresupuestosServiceImpl"> -->
+<!-- 		<property name="detallePresupuestosDAO"><ref bean="detallePresupuestosDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="detalleVentasService" class="py.com.quimpar.web.services.impl.DetalleVentasServiceImpl"> -->
+<!-- 		<property name="detalleVentasDAO"><ref bean="detalleVentasDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="fraccionamienoService" class="py.com.quimpar.web.services.impl.FraccionamienoServiceImpl"> -->
+<!-- 		<property name="fraccionamienoDAO"><ref bean="fraccionamienoDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="presupuestosService" class="py.com.quimpar.web.services.impl.PresupuestosServiceImpl"> -->
+<!-- 		<property name="presupuestosDAO"><ref bean="presupuestosDAO" /></property> -->
+<!-- 	</bean> -->
+	<bean id="productosService" class="py.com.quimpar.services.impl.ProductosServiceImpl">
+		<property name="productosDAO"><ref bean="productosDAO" /></property>
+	</bean>
+	<bean id="proveedoresService" class="py.com.quimpar.services.impl.ProveedoresServiceImpl">
+		<property name="proveedoresDAO"><ref bean="proveedoresDAO" /></property>
+	</bean>
+<!-- 	<bean id="sectorService" class="py.com.quimpar.web.services.impl.SectorServiceImpl"> -->
+<!-- 		<property name="sectorDAO"><ref bean="sectorDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="stockService" class="py.com.quimpar.web.services.impl.StockServiceImpl"> -->
+<!-- 		<property name="stockDAO"><ref bean="stockDAO" /></property> -->
+<!-- 	</bean> -->
+<!-- 	<bean id="ventasService" class="py.com.quimpar.web.services.impl.VentasServiceImpl"> -->
+<!-- 		<property name="ventasDAO"><ref bean="ventasDAO" /></property> -->
+<!-- 	</bean> -->
 </beans>

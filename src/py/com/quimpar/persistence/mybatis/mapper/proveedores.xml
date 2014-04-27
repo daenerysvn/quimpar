@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.ProveedoresDAO">
+  <sql id="selectProveedores">
+    select 
+		id id, 
+		razon_social razonSocial, 
+		ruc ruc, 
+		direccion direccion, 
+		telefono telefono, 
+		telefono_movil telefonoMovil, 
+		email email, 
+		pais pais, 
+		contacto contacto
+    from  PROVEEDORES
+  </sql>
+
+  <select id="getProveedoresById" resultType="proveedoresDTO" parameterType="java.lang.Long">
+    <include refid="selectProveedores"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listProveedores" resultType="proveedoresDTO">
+    <include refid="selectProveedores"/>
+  </select>
+
+  <insert id="createProveedores" parameterType="proveedoresDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('PROVEEDORES_id_seq')
+    </selectKey>
+    insert into PROVEEDORES 
+      (
+		id, 
+		razon_social, 
+		ruc, 
+		direccion, 
+		telefono, 
+		telefono_movil, 
+		email, 
+		pais, 
+		contacto
+      )
+    values
+      (
+		#{id}, 
+		#{razonSocial}, 
+		#{ruc}, 
+		#{direccion}, 
+		#{telefono}, 
+		#{telefonoMovil}, 
+		#{email}, 
+		#{pais}, 
+		#{contacto}
+      ) 
+  </insert>
+
+  <delete id="deleteProveedores" parameterType="proveedoresDTO">
+    delete from 
+      PROVEEDORES
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateProveedores" parameterType="proveedoresDTO">
+    update PROVEEDORES 
+    set 
+		razon_social = #{razonSocial}, 
+		ruc = #{ruc}, 
+		direccion = #{direccion}, 
+		telefono = #{telefono}, 
+		telefono_movil = #{telefonoMovil}, 
+		email = #{email}, 
+		pais = #{pais}, 
+		contacto = #{contacto}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

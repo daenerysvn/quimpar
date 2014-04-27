@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.PresupuestosDAO">
+  <sql id="selectPresupuestos">
+    select 
+		id id, 
+		codigo codigo, 
+		usuario_creacion usuarioCreacion, 
+		fecha_creacion fechaCreacion, 
+		usuario_modif usuarioModif, 
+		fecha_modif fechaModif, 
+		id_cliente idCliente, 
+		monto_total montoTotal
+    from  PRESUPUESTOS
+  </sql>
+
+  <select id="getPresupuestosById" resultType="presupuestosDTO" parameterType="java.lang.Long">
+    <include refid="selectPresupuestos"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listPresupuestos" resultType="presupuestosDTO">
+    <include refid="selectPresupuestos"/>
+  </select>
+
+  <insert id="createPresupuestos" parameterType="presupuestosDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('PRESUPUESTOS_id_seq')
+    </selectKey>
+    insert into PRESUPUESTOS 
+      (
+		id, 
+		codigo, 
+		usuario_creacion, 
+		fecha_creacion, 
+		usuario_modif, 
+		fecha_modif, 
+		id_cliente, 
+		monto_total
+      )
+    values
+      (
+		#{id}, 
+		#{codigo}, 
+		#{usuarioCreacion}, 
+		#{fechaCreacion}, 
+		#{usuarioModif}, 
+		#{fechaModif}, 
+		#{idCliente}, 
+		#{montoTotal}
+      ) 
+  </insert>
+
+  <delete id="deletePresupuestos" parameterType="presupuestosDTO">
+    delete from 
+      PRESUPUESTOS
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updatePresupuestos" parameterType="presupuestosDTO">
+    update PRESUPUESTOS 
+    set 
+		codigo = #{codigo}, 
+		usuario_creacion = #{usuarioCreacion}, 
+		fecha_creacion = #{fechaCreacion}, 
+		usuario_modif = #{usuarioModif}, 
+		fecha_modif = #{fechaModif}, 
+		id_cliente = #{idCliente}, 
+		monto_total = #{montoTotal}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

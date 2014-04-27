@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.DetalleVentasDAO">
+  <sql id="selectDetalleVentas">
+    select 
+		id id, 
+		id_venta idVenta, 
+		id_producto idProducto, 
+		lote lote, 
+		vencimiento vencimiento, 
+		precio_venta precioVenta, 
+		cantidad cantidad
+    from  DETALLE_VENTAS
+  </sql>
+
+  <select id="getDetalleVentasById" resultType="detalleVentasDTO" parameterType="java.lang.Long">
+    <include refid="selectDetalleVentas"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listDetalleVentas" resultType="detalleVentasDTO">
+    <include refid="selectDetalleVentas"/>
+  </select>
+
+  <insert id="createDetalleVentas" parameterType="detalleVentasDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('DETALLE_VENTAS_id_seq')
+    </selectKey>
+    insert into DETALLE_VENTAS 
+      (
+		id, 
+		id_venta, 
+		id_producto, 
+		lote, 
+		vencimiento, 
+		precio_venta, 
+		cantidad
+      )
+    values
+      (
+		#{id}, 
+		#{idVenta}, 
+		#{idProducto}, 
+		#{lote}, 
+		#{vencimiento}, 
+		#{precioVenta}, 
+		#{cantidad}
+      ) 
+  </insert>
+
+  <delete id="deleteDetalleVentas" parameterType="detalleVentasDTO">
+    delete from 
+      DETALLE_VENTAS
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateDetalleVentas" parameterType="detalleVentasDTO">
+    update DETALLE_VENTAS 
+    set 
+		id_venta = #{idVenta}, 
+		id_producto = #{idProducto}, 
+		lote = #{lote}, 
+		vencimiento = #{vencimiento}, 
+		precio_venta = #{precioVenta}, 
+		cantidad = #{cantidad}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

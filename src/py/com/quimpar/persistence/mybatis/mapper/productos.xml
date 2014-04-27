@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.ProductosDAO">
+  <sql id="selectProductos">
+    select 
+		id id, 
+		codigo codigo, 
+		descripcion descripcion, 
+		stock_minimo stockMinimo, 
+		cantidad_fraccionamiento cantidadFraccionamiento, 
+		factor_ganancia factorGanancia, 
+		id_sector idSector
+    from  PRODUCTOS
+  </sql>
+
+  <select id="getProductosById" resultType="productosDTO" parameterType="java.lang.Long">
+    <include refid="selectProductos"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listProductos" resultType="productosDTO">
+    <include refid="selectProductos"/>
+  </select>
+
+  <insert id="createProductos" parameterType="productosDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('PRODUCTOS_id_seq')
+    </selectKey>
+    insert into PRODUCTOS 
+      (
+		id, 
+		codigo, 
+		descripcion, 
+		stock_minimo, 
+		cantidad_fraccionamiento, 
+		factor_ganancia, 
+		id_sector
+      )
+    values
+      (
+		#{id}, 
+		#{codigo}, 
+		#{descripcion}, 
+		#{stockMinimo}, 
+		#{cantidadFraccionamiento}, 
+		#{factorGanancia}, 
+		#{idSector}
+      ) 
+  </insert>
+
+  <delete id="deleteProductos" parameterType="productosDTO">
+    delete from 
+      PRODUCTOS
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateProductos" parameterType="productosDTO">
+    update PRODUCTOS 
+    set 
+		codigo = #{codigo}, 
+		descripcion = #{descripcion}, 
+		stock_minimo = #{stockMinimo}, 
+		cantidad_fraccionamiento = #{cantidadFraccionamiento}, 
+		factor_ganancia = #{factorGanancia}, 
+		id_sector = #{idSector}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.DetallePresupuestosDAO">
+  <sql id="selectDetallePresupuestos">
+    select 
+		id id, 
+		id_presupuesto idPresupuesto, 
+		id_producto idProducto, 
+		cantidad cantidad
+    from  DETALLE_PRESUPUESTOS
+  </sql>
+
+  <select id="getDetallePresupuestosById" resultType="detallePresupuestosDTO" parameterType="java.lang.Long">
+    <include refid="selectDetallePresupuestos"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listDetallePresupuestos" resultType="detallePresupuestosDTO">
+    <include refid="selectDetallePresupuestos"/>
+  </select>
+
+  <insert id="createDetallePresupuestos" parameterType="detallePresupuestosDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('DETALLE_PRESUPUESTOS_id_seq')
+    </selectKey>
+    insert into DETALLE_PRESUPUESTOS 
+      (
+		id, 
+		id_presupuesto, 
+		id_producto, 
+		cantidad
+      )
+    values
+      (
+		#{id}, 
+		#{idPresupuesto}, 
+		#{idProducto}, 
+		#{cantidad}
+      ) 
+  </insert>
+
+  <delete id="deleteDetallePresupuestos" parameterType="detallePresupuestosDTO">
+    delete from 
+      DETALLE_PRESUPUESTOS
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateDetallePresupuestos" parameterType="detallePresupuestosDTO">
+    update DETALLE_PRESUPUESTOS 
+    set 
+		id_presupuesto = #{idPresupuesto}, 
+		id_producto = #{idProducto}, 
+		cantidad = #{cantidad}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

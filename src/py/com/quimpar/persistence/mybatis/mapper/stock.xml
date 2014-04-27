@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.StockDAO">
+  <sql id="selectStock">
+    select 
+		id id, 
+		lote lote, 
+		cantidad cantidad, 
+		sala sala, 
+		estante estante, 
+		piso piso, 
+		codigo_ncm codigoNcm, 
+		nro_cas nroCas, 
+		precio_costo precioCosto, 
+		precio_compra precioCompra, 
+		vencimiento vencimiento, 
+		id_producto idProducto
+    from  STOCK
+  </sql>
+
+  <select id="getStockById" resultType="stockDTO" parameterType="java.lang.Long">
+    <include refid="selectStock"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listStock" resultType="stockDTO">
+    <include refid="selectStock"/>
+  </select>
+
+  <insert id="createStock" parameterType="stockDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('STOCK_id_seq')
+    </selectKey>
+    insert into STOCK 
+      (
+		id, 
+		lote, 
+		cantidad, 
+		sala, 
+		estante, 
+		piso, 
+		codigo_ncm, 
+		nro_cas, 
+		precio_costo, 
+		precio_compra, 
+		vencimiento, 
+		id_producto
+      )
+    values
+      (
+		#{id}, 
+		#{lote}, 
+		#{cantidad}, 
+		#{sala}, 
+		#{estante}, 
+		#{piso}, 
+		#{codigoNcm}, 
+		#{nroCas}, 
+		#{precioCosto}, 
+		#{precioCompra}, 
+		#{vencimiento}, 
+		#{idProducto}
+      ) 
+  </insert>
+
+  <delete id="deleteStock" parameterType="stockDTO">
+    delete from 
+      STOCK
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateStock" parameterType="stockDTO">
+    update STOCK 
+    set 
+		lote = #{lote}, 
+		cantidad = #{cantidad}, 
+		sala = #{sala}, 
+		estante = #{estante}, 
+		piso = #{piso}, 
+		codigo_ncm = #{codigoNcm}, 
+		nro_cas = #{nroCas}, 
+		precio_costo = #{precioCosto}, 
+		precio_compra = #{precioCompra}, 
+		vencimiento = #{vencimiento}, 
+		id_producto = #{idProducto}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

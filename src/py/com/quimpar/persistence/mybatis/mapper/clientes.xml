@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.ClientesDAO">
+  <sql id="selectClientes">
+    select 
+		id id, 
+		razon_social razonSocial, 
+		ruc ruc, 
+		direccion direccion, 
+		telefono telefono, 
+		telefono_movil telefonoMovil, 
+		email email, 
+		pais pais, 
+		contacto contacto
+    from  CLIENTES
+  </sql>
+
+  <select id="getClientesById" resultType="clientesDTO" parameterType="java.lang.Long">
+    <include refid="selectClientes"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listClientes" resultType="clientesDTO">
+    <include refid="selectClientes"/>
+  </select>
+
+  <insert id="createClientes" parameterType="clientesDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('CLIENTES_id_seq')
+    </selectKey>
+    insert into CLIENTES 
+      (
+		id, 
+		razon_social, 
+		ruc, 
+		direccion, 
+		telefono, 
+		telefono_movil, 
+		email, 
+		pais, 
+		contacto
+      )
+    values
+      (
+		#{id}, 
+		#{razonSocial}, 
+		#{ruc}, 
+		#{direccion}, 
+		#{telefono}, 
+		#{telefonoMovil}, 
+		#{email}, 
+		#{pais}, 
+		#{contacto}
+      ) 
+  </insert>
+
+  <delete id="deleteClientes" parameterType="clientesDTO">
+    delete from 
+      CLIENTES
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateClientes" parameterType="clientesDTO">
+    update CLIENTES 
+    set 
+		razon_social = #{razonSocial}, 
+		ruc = #{ruc}, 
+		direccion = #{direccion}, 
+		telefono = #{telefono}, 
+		telefono_movil = #{telefonoMovil}, 
+		email = #{email}, 
+		pais = #{pais}, 
+		contacto = #{contacto}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.VentasDAO">
+  <sql id="selectVentas">
+    select 
+		id id, 
+		id_cliente idCliente, 
+		usuario_creacion usuarioCreacion, 
+		fecha_creacion fechaCreacion, 
+		nro_factura nroFactura
+    from  VENTAS
+  </sql>
+
+  <select id="getVentasById" resultType="ventasDTO" parameterType="java.lang.Long">
+    <include refid="selectVentas"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listVentas" resultType="ventasDTO">
+    <include refid="selectVentas"/>
+  </select>
+
+  <insert id="createVentas" parameterType="ventasDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('VENTAS_id_seq')
+    </selectKey>
+    insert into VENTAS 
+      (
+		id, 
+		id_cliente, 
+		usuario_creacion, 
+		fecha_creacion, 
+		nro_factura
+      )
+    values
+      (
+		#{id}, 
+		#{idCliente}, 
+		#{usuarioCreacion}, 
+		#{fechaCreacion}, 
+		#{nroFactura}
+      ) 
+  </insert>
+
+  <delete id="deleteVentas" parameterType="ventasDTO">
+    delete from 
+      VENTAS
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateVentas" parameterType="ventasDTO">
+    update VENTAS 
+    set 
+		id_cliente = #{idCliente}, 
+		usuario_creacion = #{usuarioCreacion}, 
+		fecha_creacion = #{fechaCreacion}, 
+		nro_factura = #{nroFactura}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

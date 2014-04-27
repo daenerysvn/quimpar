@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.SectorDAO">
+  <sql id="selectSector">
+    select 
+		id id, 
+		codigo codigo, 
+		descripcion descripcion, 
+		id_fraccionamiento idFraccionamiento
+    from  SECTOR
+  </sql>
+
+  <select id="getSectorById" resultType="sectorDTO" parameterType="java.lang.Long">
+    <include refid="selectSector"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listSector" resultType="sectorDTO">
+    <include refid="selectSector"/>
+  </select>
+
+  <insert id="createSector" parameterType="sectorDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('SECTOR_id_seq')
+    </selectKey>
+    insert into SECTOR 
+      (
+		id, 
+		codigo, 
+		descripcion, 
+		id_fraccionamiento
+      )
+    values
+      (
+		#{id}, 
+		#{codigo}, 
+		#{descripcion}, 
+		#{idFraccionamiento}
+      ) 
+  </insert>
+
+  <delete id="deleteSector" parameterType="sectorDTO">
+    delete from 
+      SECTOR
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateSector" parameterType="sectorDTO">
+    update SECTOR 
+    set 
+		codigo = #{codigo}, 
+		descripcion = #{descripcion}, 
+		id_fraccionamiento = #{idFraccionamiento}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

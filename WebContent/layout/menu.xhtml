@@ -8,44 +8,14 @@
 	
 	<rich:toolBar id="MenuBar" styleClass="menuBar">
 	    
-	    <rich:dropDownMenu value="Configuración" rendered="#{identity.hasRole('grpmnu:config')}">
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:application')}">
-	    		<s:link view="/administracion/aplicaciones.xhtml" value="Admin. Aplicaciones">
-	    		   <f:param value="S" name="initVar"/>
-	    		</s:link>
-	    	</rich:menuItem>
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:admintemplate')}">
-	    		<s:link view="/administracion/adminTemplate.xhtml" value="Admin. Template">
-	    		   <f:param value="S" name="initVar"/>
-	    		</s:link>
-	    	</rich:menuItem>
-	    </rich:dropDownMenu>
-	    <rich:dropDownMenu value="Gestión" rendered="#{identity.hasRole('grpmnu:manage')}">	
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:user')}">
-	    	    <s:link view="/usuarios/adminUsuarios.xhtml" value="Gestionar Usuarios">
-	    		   <f:param value="S" name="initVar"/>
-	    		</s:link>
-	    	</rich:menuItem>
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:uservalidate')}">
-	    	    <s:link view="/gestion/adminVigencias.xhtml" value="Gestionar Vigencias">
-	    		   <f:param value="S" name="initVar"/>
-	    		</s:link>
-	    	</rich:menuItem>
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:massiveload')}">
-	    	    <s:link view="/usuarios/cargaMasiva.xhtml" value="Ejecutar Template">
+	    <rich:dropDownMenu value="Gestión" rendered="#{identity.hasRole('grpmnu:gestion')}">	
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
+	    	    <s:link view="/gestion/clientes.xhtml" value="Gestionar Clientes">
 	    		   <f:param value="S" name="initVar"/>
 	    		</s:link>
 	    	</rich:menuItem>
 	   	 </rich:dropDownMenu>
-	   	 <rich:dropDownMenu value="Consultas" rendered="#{identity.hasRole('grpmnu:query')}">
-	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:appusersquery')}">
-	    	    <s:link view="/consultas/usuariosPorApp.xhtml" value="Usuarios por Aplicación">
-	    		   <f:param value="S" name="initVar"/>
-	    		</s:link>
-	    	</rich:menuItem>
-	    </rich:dropDownMenu> 
 	    
-	
 	                       <!-- cabecera -->
 		<rich:toolBarGroup location="right">
 			<h:outputText 

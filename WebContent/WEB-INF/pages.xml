@@ -15,7 +15,11 @@
 	</page>
 	
 	<page view-id="/home.xhtml" login-required="false"/>
-    
+	
+	<page view-id="/gestion/clientes.xhtml">
+        <action execute="#{gestionClientes.initInfo()}"/>
+        <param name="initVar" value="#{gestionClientes.initVar}" />
+    </page>
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">

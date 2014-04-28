@@ -1,0 +1,82 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+			    xmlns:s="http://jboss.com/products/seam/taglib"
+			    xmlns:ui="http://java.sun.com/jsf/facelets"
+			    xmlns:f="http://java.sun.com/jsf/core"
+			    xmlns:h="http://java.sun.com/jsf/html"
+			    xmlns:rich="http://richfaces.org/rich"
+			    xmlns:a4j="http://richfaces.org/a4j"
+			    template="/layout/template.xhtml">
+	
+	<ui:define name="varProjectName">
+		<ui:param name="projectName" value="#{appRes['quimpar.manage.clientes']}"/>
+	</ui:define>
+
+	<ui:define name="body">	
+	    <h:form id="formClientes"> 
+				<rich:panel id="filtroClientesOutputPanel" header="Gestionar Clientes"> 					 		
+							<s:decorate template="../layout/edit.xhtml">
+                                  <ui:define name="label">Cliente:</ui:define>
+						          <h:inputText value="#{gestionClientes.nombre}" id="nombreInput"/>                
+                            </s:decorate>
+						    <div style="clear:both" />
+							<div class="actionButtons">
+							     <center>
+									<a4j:commandButton id="btnConsultarU" 
+									                   styleClass="button"
+													   reRender="clientesListOutputPanel,clientesDataTable,panelMessage,formClientes" 
+													   value="Consultar"  
+													   action="#{gestionClientes.consultar()}" 
+													   onclick="onRequestStart();"
+										   			   oncomplete="onRequestEnd();"/>	
+							     </center>
+							</div>
+						    <div style="clear:both; height: 20px"/>
+			         	
+				   		<a4j:outputPanel id="clientesListOutputPanel">
+							<rich:dataTable id="clientesDataTable" rendered="#{not empty gestionClientes.clientes}" var="cliente"
+		                                 value="#{gestionClientes.clientes}" rows="20">
+							    <f:facet name="header">
+					                <rich:columnGroup>
+					                    <rich:column >
+					                        <h:outputText value="Razon Social"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Ruc"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Direccion"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Telefono"/>
+					                    </rich:column>
+					                    <rich:column>
+					                        <h:outputText value="Telefono Movil"/>
+					                    </rich:column>
+					                </rich:columnGroup>
+				            	</f:facet>
+				            	<rich:column sortBy="#{cliente.razonSocial}" filterBy="#{cliente.razonSocial}" filterEvent="onkeyup">
+									<h:outputText value="#{cliente.razonSocial}"/>
+								</rich:column>
+								<rich:column sortBy="#{cliente.ruc}" filterBy="#{cliente.ruc}" filterEvent="onkeyup">
+									<h:outputText value="#{cliente.ruc}" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cliente.direccion}"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cliente.telefono}"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{cliente.telefonoMovil}"/>
+								</rich:column>
+							</rich:dataTable>
+		                    <rich:datascroller align="center" for="clientesDataTable" id="sc24" maxPages="10" rendered="#{not empty gestionClientes.clientes}"
+		                                        page="#{gestionClientes.pagina}" renderIfSinglePage="false"/>
+				     </a4j:outputPanel>
+			</rich:panel>
+	     </h:form>
+    </ui:define>
+    
+</ui:composition>

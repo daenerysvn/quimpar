@@ -79,6 +79,8 @@ public class Authenticator {
 			 * for (PermissionDTO p : permissions) {
 			 * identity.addRole(p.getPropertyValue()); }
 			 */
+			identity.addRole("grpmnu:gestion");
+			identity.addRole("pag:gestionarclientes");
 
 			return true;
 		} catch (Exception e) {

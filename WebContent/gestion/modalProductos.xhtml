@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:rich="http://richfaces.org/rich"
+      xmlns:a4j="http://richfaces.org/a4j">
+
+    <a4j:loadBundle basename="messages" var="messages"/>
+
+    <rich:modalPanel id="popUpProductosId" width="640" height="486" moveable="true" left="200" top="50" keepVisualState="true">
+
+        <h1>Productos</h1>
+        <rich:separator height="1" lineType="solid"/><br/>
+
+        <a4j:form id="modalPanelProductosFormId" ajaxSubmit="true">
+
+            <a4j:outputPanel>
+
+                <h:panelGrid columns="3">
+                    <h:outputText value="Descripción:"/>
+                    <h:inputText id="criterioFiltroDescriId" value="#{registrarBoletas.filtroDescri}" style="width:400px"/>
+                    <h:outputText value=""/>
+                    
+                    <a4j:commandButton value="Buscar" action="#{registrarBoletas.buscar}" reRender="productosListId"/>
+
+                </h:panelGrid>
+                
+				<rich:dataTable id="productosListId"
+					value="#{registrarBoletas.productos}" var="producto" width="100%"
+					columnsWidth="10%,30%,10%">
+
+					<f:facet name="header">
+
+						<rich:columnGroup>
+							<h:column>
+								<h:outputText value="Código" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="Descripción" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="U. Medida" styleClass="columnHeader" />
+							</h:column>
+						</rich:columnGroup>
+					</f:facet>
+
+				<rich:column>
+					<a4j:commandLink
+						action="#{registrarBoletas.insertarDetalle(producto)}"
+						reRender="detallesListId,panelDetalleId"
+						ajaxSingle="true">
+						<h:outputText value="#{producto.codigo}" />
+						<rich:componentControl for="popUpProductosId" operation="hide"
+							event="onclick" />
+					</a4j:commandLink>
+				</rich:column>
+				<rich:column>
+						<h:outputText value="#{producto.descripcion}" />
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{producto.um}" />
+					</rich:column>
+				</rich:dataTable>
+				<rich:datascroller align="center" for="productosListId" id="sc24" maxPages="10" rendered="#{not empty registrarBoletas.productos}"
+		                                        page="#{registrarBoletas.pagina}" renderIfSinglePage="false"/>
+
+            </a4j:outputPanel>
+
+            <h:panelGrid id="seccionBotonesModalId" columns="1">
+
+                <a4j:commandButton value="Cerrar">
+                    <rich:componentControl for="popUpProductosId" operation="hide" event="onclick"/>
+                </a4j:commandButton>
+
+            </h:panelGrid>
+
+        </a4j:form>
+
+    </rich:modalPanel>
+	
+</html>
+

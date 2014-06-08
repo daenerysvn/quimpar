@@ -1,0 +1,213 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="varProjectName">
+		<ui:param name="projectName"
+			value="#{appRes['quimpar.manage.registrarBoletas']}" />
+	</ui:define>
+
+	<ui:define name="body">
+		<script type="text/javascript">
+
+            function confirmDelete() {
+
+                return confirm("Esta seguro que desea eliminar este Detalle?");
+
+            }
+
+        </script>
+
+		<h1>#{messages['quimpar.manage.registrarBoletas']}</h1>
+		<h:form id="formReg">
+			<a4j:outputPanel id="regionEncabezadoId">
+				<h:panelGrid columns="4">
+					<h:outputText value="#{messages['fecha']}" />
+					<rich:calendar value="#{registrarBoletas.fechaFactura}"
+						enableManualInput="true" popup="true" inputSize="11" id="fechaId"
+						required="true" readonly="#{registrarBoletas.estaGrabado}"
+						locale="es_PY" inputClass="text input_mask mask_date_us"
+						datePattern="dd/MM/yyyy">
+
+					</rich:calendar>
+
+					<h:outputText value="#{messages['nroFact']}" />
+					<h:inputText id="nroFactId" value="#{registrarBoletas.nroFactura}"
+						style="width:200px" required="true"
+						disabled="#{registrarBoletas.estaGrabado}">
+					</h:inputText>
+
+					<h:outputText value="#{messages['ruc']}" />
+					<h:inputText id="rucId" value="#{registrarBoletas.ruc}"
+						style="width:100px" required="false"
+						disabled="#{registrarBoletas.estaGrabado}">
+						<a4j:support id="a4jSupportRuc" event="onblur"
+							action="#{registrarBoletas.obtenerProveedor()}"
+							reRender="regionEncabezadoId" ajaxSingle="true" />
+					</h:inputText>
+					<h:outputText value="#{registrarBoletas.proveedor.razonSocial}"
+						rendered="#{registrarBoletas.proveedor.razonSocial != null}" />
+				</h:panelGrid>
+
+			</a4j:outputPanel>
+			<a4j:outputPanel id="panelDetalleId">
+				<h:panelGrid columns="3">
+					<h:outputText value="Detalles:" styleClass="label" />
+					<a4j:commandLink rendered="#{not registrarBoletas.estaGrabado}">
+						<h:outputText value="Agregar" />
+						<rich:componentControl for="popUpProductosId" operation="show"
+							event="onclick" reRender="detallesListId, panelDetalleId, panelMessage">
+						</rich:componentControl>
+					</a4j:commandLink>
+				</h:panelGrid>
+
+				<rich:dataTable id="detallesListId"
+					value="#{registrarBoletas.detalles}" var="detalle" width="100%"
+					columnsWidth="40%,10%,15%,10%,10%,10%">
+
+					<f:facet name="header">
+
+						<rich:columnGroup>
+
+							<h:column>
+								<h:outputText value="Descripcion" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="Lote" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="Vencimiento" styleClass="columnHeader" />
+							</h:column>
+
+							<h:column>
+								<h:outputText value="Cantidad" styleClass="columnHeader" />
+							</h:column>
+
+							<h:column>
+								<h:outputText value="Precio Unit" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="Precio Total" styleClass="columnHeader" />
+							</h:column>
+							<h:column>
+								<h:outputText value="#{messages['accion']}"
+									styleClass="columnHeader" />
+							</h:column>
+
+						</rich:columnGroup>
+
+					</f:facet>
+
+					<rich:column>
+						<h:outputText value="#{detalle.descriProducto}" />
+					</rich:column>
+					<rich:column>
+						<h:inputText id ="loteId" value="#{detalle.producto.lote}" style="width:100px"
+							required="true">
+						</h:inputText>
+					</rich:column>
+
+					<rich:column>
+						<rich:calendar id="vencimientoId" value="#{detalle.producto.vencimiento}"
+							enableManualInput="true" popup="true" inputSize="11" 
+							required="true" readonly="#{registrarBoletas.estaGrabado}"
+							locale="es_PY" inputClass="text input_mask mask_date_us"
+							datePattern="dd/MM/yyyy">
+
+						</rich:calendar>
+					</rich:column>
+
+					<rich:column>
+
+						<rich:inputNumberSpinner id="cantidadId"
+							value="#{detalle.cantidad}" step="1" minValue="1"
+							maxValue="99999" inputSize="1" cycled="false"
+							oninputkeypress="return isNumberKey(event);">
+							<a4j:support event="onchange"
+								action="#{registrarBoletas.calcularTotal}"
+								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId" />
+
+						</rich:inputNumberSpinner>
+					</rich:column>
+
+					<rich:column>
+						<h:inputText value="#{detalle.precioCompra}" style="width:100px"
+							required="false">
+							<a4j:support id="a4jSupportRuc" event="onblur"
+								action="#{registrarBoletas.calcularTotal}"
+								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId" />
+						</h:inputText>
+					</rich:column>
+					<rich:column>
+						<h:outputText value="#{detalle.precioCompra*detalle.cantidad}"
+							style="width:100px">
+						</h:outputText>
+					</rich:column>
+					<h:column>
+						<s:link id="eliminarId" value="#{messages['eliminar']}"
+							action="#{registrarBoletas.eliminarDetalle(detalle)}"
+							onclick="return confirmDelete()"
+							rendered="#{not registrarBoletas.estaGrabado}"
+							reRender="panelDetalleId,detallesListId" />
+					</h:column>
+
+					<f:facet name="footer">
+						<rich:columnGroup>
+							<rich:column>Total:</rich:column>
+							<rich:column>
+								<h:outputText value="" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="" />
+							</rich:column>
+							<rich:column>
+								<h:outputText value="" />
+							</rich:column>
+							<rich:column styleClass="rich-align-right">
+								<h:outputText value="#{registrarBoletas.montoSuma}">
+									<f:convertNumber pattern="#,##0" locale="es_PY" />
+								</h:outputText>
+							</rich:column>
+
+						</rich:columnGroup>
+					</f:facet>
+				</rich:dataTable>
+				<br />
+				<h:outputText value="Total Factura" />
+				<h:inputText id="totalId" value="#{registrarBoletas.montoTotal}"
+					style="width:100px" required="false"
+					disabled="#{registrarBoletas.estaGrabado}">
+				</h:inputText>
+			</a4j:outputPanel>
+
+			<rich:spacer height="5"></rich:spacer>
+
+			<h:panelGrid id="seccionBotonesId" columns="4" width="100%">
+
+				<h:commandButton id="botonGrabarId" value="Grabar"
+					action="#{registrarBoletas.grabar}"
+					onclick="return confirm('Esta seguro que los datos estan correctos? No se permite modificar la Liquidacion');"
+					rendered="#{!registrarBoletas.estaGrabado}" reRender="formReg" />
+
+
+				<h:commandButton id="botonVolverId" value="Volver"
+					action="#{registrarBoletas.initComponents()}" immediate="true"
+					reRender="formReg" />
+
+			</h:panelGrid>
+
+		</h:form>
+		
+		<ui:include src="modalProductos.xhtml"/>		
+	</ui:define>
+
+</ui:composition>

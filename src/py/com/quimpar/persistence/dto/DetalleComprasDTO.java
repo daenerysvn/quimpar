@@ -10,6 +10,9 @@ public class DetalleComprasDTO {
 	private Date vencimiento;
 	private Long precioCompra;
 	private Long cantidad;
+	
+	private String descriProducto;
+	private ProductosDTO producto;
 
 	public Long getId() {
 		return id;
@@ -53,5 +56,42 @@ public class DetalleComprasDTO {
 	public void setCantidad(Long cantidad) {
 		this.cantidad = cantidad;
 	}
+	public String getDescriProducto() {
+		return descriProducto;
+	}
+	public void setDescriProducto(String descriProducto) {
+		this.descriProducto = descriProducto;
+	}
+	public ProductosDTO getProducto() {
+		return producto;
+	}
+	public void setProducto(ProductosDTO producto) {
+		this.producto = producto;
+	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		DetalleComprasDTO other = (DetalleComprasDTO) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+	
+	
 
 }

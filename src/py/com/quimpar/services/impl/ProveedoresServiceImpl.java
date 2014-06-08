@@ -92,4 +92,17 @@ public class ProveedoresServiceImpl implements ProveedoresService{
     return data;
   }
 
+@Override
+public ProveedoresDTO getProveedorByRuc(String ruc) throws ServiceException {
+    if (ruc == null)
+        throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","ruc");
+
+      ProveedoresDTO proveedor =  proveedoresDAO.getProveedoresByRuc(ruc);
+
+      if (proveedor == null)
+        throw new ServiceException(ErrorCode.NO_DATA_FOUND,"proveedores.notfound", ruc);
+
+      return proveedor;
+}
+
 }

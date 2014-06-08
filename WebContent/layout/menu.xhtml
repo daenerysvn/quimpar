@@ -14,6 +14,11 @@
 	    		   <f:param value="S" name="initVar"/>
 	    		</s:link>
 	    	</rich:menuItem>
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
+	    	    <s:link view="/gestion/registrarBoletas.xhtml" value="Registrar Compras">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
 	   	 </rich:dropDownMenu>
 	    
 	                       <!-- cabecera -->

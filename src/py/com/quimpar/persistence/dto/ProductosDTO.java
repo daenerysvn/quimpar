@@ -1,5 +1,7 @@
 package py.com.quimpar.persistence.dto;
 
+import java.util.Date;
+
 public class ProductosDTO {
 	private Long id;
 	private String codigo;
@@ -8,7 +10,25 @@ public class ProductosDTO {
 	private Long cantidadFraccionamiento;
 	private Long factorGanancia;
 	private Long idSector;
+	
+	private String lote;
+	private Date vencimiento;
+	
+	private String um;
+	
 
+	public String getLote() {
+		return lote;
+	}
+	public void setLote(String lote) {
+		this.lote = lote;
+	}
+	public Date getVencimiento() {
+		return vencimiento;
+	}
+	public void setVencimiento(Date vencimiento) {
+		this.vencimiento = vencimiento;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -50,6 +70,12 @@ public class ProductosDTO {
 	}
 	public void setIdSector(Long idSector) {
 		this.idSector = idSector;
+	}
+	public String getUm() {
+		return um;
+	}
+	public void setUm(String um) {
+		this.um = um;
 	}
 
 }

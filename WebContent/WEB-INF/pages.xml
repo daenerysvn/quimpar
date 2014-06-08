@@ -20,6 +20,10 @@
         <action execute="#{gestionClientes.initInfo()}"/>
         <param name="initVar" value="#{gestionClientes.initVar}" />
     </page>
+    <page view-id="/gestion/registrarBoletas.xhtml">
+        <action execute="#{registrarBoletas.initInfo()}"/>
+        <param name="initVar" value="#{registrarBoletas.initVar}" />
+    </page>
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">

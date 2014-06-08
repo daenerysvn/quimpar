@@ -1,15 +1,8 @@
 package py.com.quimpar.session.clientes;
 
-import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
-import javax.faces.model.SelectItem;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.jboss.seam.ScopeType;
 import org.jboss.seam.annotations.Name;
 import org.jboss.seam.annotations.Scope;
@@ -74,6 +67,10 @@ public class GestionarClientes extends ControllerBase implements Serializable {
 		setPagina(0);
 	}
 
+	public void consultar(){
+		System.out.println("Consultar:"+nombre);
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}

@@ -21,6 +21,11 @@
     <include refid="selectProveedores"/>
     where id = #{id}  
   </select>
+  
+   <select id="getProveedoresByRuc" resultType="proveedoresDTO" parameterType="string">
+    <include refid="selectProveedores"/>
+    where ruc = #{ruc}  
+  </select>
 
   <select id="listProveedores" resultType="proveedoresDTO">
     <include refid="selectProveedores"/>

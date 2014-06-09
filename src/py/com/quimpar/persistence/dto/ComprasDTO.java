@@ -1,6 +1,7 @@
 package py.com.quimpar.persistence.dto;
 
 import java.util.Date;
+import java.util.List;
 
 public class ComprasDTO {
 	private Long id;
@@ -9,6 +10,8 @@ public class ComprasDTO {
 	private String nroFactura;
 	private Long montoTotal;
 	private Long idProveedor;
+	
+	private List<DetalleComprasDTO> detalles;
 
 	public Long getId() {
 		return id;
@@ -45,6 +48,12 @@ public class ComprasDTO {
 	}
 	public void setIdProveedor(Long idProveedor) {
 		this.idProveedor = idProveedor;
+	}
+	public List<DetalleComprasDTO> getDetalles() {
+		return detalles;
+	}
+	public void setDetalles(List<DetalleComprasDTO> detalles) {
+		this.detalles = detalles;
 	}
 
 }

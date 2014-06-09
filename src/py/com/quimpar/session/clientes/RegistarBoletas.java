@@ -17,6 +17,7 @@ import org.springframework.context.ApplicationContext;
 
 import py.com.quimpar.config.QuimparApplicationContextProvider;
 import py.com.quimpar.exception.ServiceException;
+import py.com.quimpar.persistence.dto.ComprasDTO;
 import py.com.quimpar.persistence.dto.DetalleComprasDTO;
 import py.com.quimpar.persistence.dto.ProductosDTO;
 import py.com.quimpar.persistence.dto.ProveedoresDTO;
@@ -143,6 +144,15 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 	
 	public void grabar(){
 		//TODO
+		
+		ComprasDTO compra = new ComprasDTO();
+		compra.setFechaCompra(new Date());
+		compra.setFechaFactura(fechaFactura);
+		//compra.setIdProveedor(proveedor.getId());
+		compra.setMontoTotal(montoTotal);
+		compra.setNroFactura(nroFactura);
+		
+		compra.setDetalles(detalles);
 		estaGrabado=true;
 	}
 	

@@ -45,7 +45,7 @@
 
 					<h:outputText value="#{messages['ruc']}" />
 					<h:inputText id="rucId" value="#{registrarBoletas.ruc}"
-						style="width:100px" required="false"
+						style="width:100px" required="true"
 						disabled="#{registrarBoletas.estaGrabado}">
 						<a4j:support id="a4jSupportRuc" event="onblur"
 							action="#{registrarBoletas.obtenerProveedor()}"
@@ -131,7 +131,7 @@
 							oninputkeypress="return isNumberKey(event);">
 							<a4j:support event="onchange"
 								action="#{registrarBoletas.calcularTotal}"
-								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId" />
+								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId,vencimientoId,loteId" />
 
 						</rich:inputNumberSpinner>
 					</rich:column>
@@ -141,7 +141,7 @@
 							required="false">
 							<a4j:support id="a4jSupportRuc" event="onblur"
 								action="#{registrarBoletas.calcularTotal}"
-								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId" />
+								reRender="panelDetalleId,detallesListId" ajaxSingle="true" process="detallesListId,vencimientoId,loteId" />
 						</h:inputText>
 					</rich:column>
 					<rich:column>
@@ -184,7 +184,7 @@
 				<br />
 				<h:outputText value="Total Factura" />
 				<h:inputText id="totalId" value="#{registrarBoletas.montoTotal}"
-					style="width:100px" required="false"
+					style="width:100px" required="true"
 					disabled="#{registrarBoletas.estaGrabado}">
 				</h:inputText>
 			</a4j:outputPanel>
@@ -200,8 +200,8 @@
 
 
 				<h:commandButton id="botonVolverId" value="Volver"
-					action="#{registrarBoletas.initComponents()}" immediate="true"
-					reRender="formReg" />
+					action="#{registrarBoletas.initInfo()}" immediate="true"
+					reRender="formReg,regionEncabezadoId,panelDetalleId,detallesListId" />
 
 			</h:panelGrid>
 

@@ -10,53 +10,53 @@
 			    template="/layout/template.xhtml">
 	
 	<ui:define name="varProjectName">
-		<ui:param name="projectName" value="#{appRes['quimpar.manage.clientes']}"/>
+		<ui:param name="projectName" value="#{appRes['quimpar.manage.proveedores']}"/>
 	</ui:define>
 
 	<ui:define name="body">	
-		 <rich:modalPanel id="formularioClienteModal" width="670" height="400" resizeable="false">
+		 <rich:modalPanel id="formularioProveedorModal" width="670" height="400" resizeable="false">
 	        <f:facet name="header">
 	            <h:panelGroup>
-	                <h:outputText value="#{gestionClientes.tituloModal}" ></h:outputText>
+	                <h:outputText value="#{gestionProveedores.tituloModal}" ></h:outputText>
 	            </h:panelGroup>
 	        </f:facet>
 	        <f:facet name="controls">
-		        <span style="cursor:pointer" onclick="javascript:Richfaces.hideModalPanel('formularioClienteModal')">X</span>
+		        <span style="cursor:pointer" onclick="javascript:Richfaces.hideModalPanel('formularioProveedorModal')">X</span>
 		    </f:facet>
-	        <h:panelGroup id="formularioClienteInclude">        
-                  <a4j:include viewId="/gestion/formularioCliente.xhtml" />
+	        <h:panelGroup id="formularioProveedorInclude">        
+                  <a4j:include viewId="/gestion/formularioProveedor.xhtml" />
 	        </h:panelGroup>
 	    </rich:modalPanel>
 	    
-	    <h:form id="formClientes"> 
-				<rich:panel id="filtroClientesOutputPanel" header="Gestionar Clientes"> 					 		
+	    <h:form id="formProveedores"> 
+				<rich:panel id="filtroProveedoresOutputPanel" header="Gestionar Proveedores"> 					 		
 							<s:decorate template="../layout/edit.xhtml">
                                   <ui:define name="label">Ruc:</ui:define>
-						          <h:inputText value="#{gestionClientes.ruc}" id="rucInput"/>                
+						          <h:inputText value="#{gestionProveedores.ruc}" id="rucInput"/>                
                             </s:decorate>
 						    <div style="clear:both" />
 							<div class="actionButtons">
 							     <center>
 									<a4j:commandButton id="btnConsultarU" 
 									                   styleClass="button"
-													   reRender="clientesListOutputPanel,clientesDataTable,panelMessage,formClientes" 
+													   reRender="proveedoresListOutputPanel,proveedoresDataTable,panelMessage,formProveedores" 
 													   value="Consultar"  
-													   action="#{gestionClientes.consultar()}" 
+													   action="#{gestionProveedores.consultar()}" 
 													   onclick="onRequestStart();"
 										   			   oncomplete="onRequestEnd();"/>
-									<a4j:commandButton reRender="formularioClienteModal, formularioClienteForm"
+									<a4j:commandButton reRender="formularioProveedorModal, formularioProveedorForm"
 									                   value="Nuevo" 
 						                               id="newAction" 
-						                               action="#{gestionClientes.nuevo()}"
-							  	                       oncomplete="#{rich:component('formularioClienteModal')}.show()" 
+						                               action="#{gestionProveedores.nuevo()}"
+							  	                       oncomplete="#{rich:component('formularioProveedorModal')}.show()" 
 							  	                       immediate="true"/>	
 							     </center>
 							</div>
 						    <div style="clear:both; height: 20px"/>
 			         	
-				   		<a4j:outputPanel id="clientesListOutputPanel">
-							<rich:dataTable id="clientesDataTable" rendered="#{not empty gestionClientes.clientes}" var="cliente"
-		                                 value="#{gestionClientes.clientes}" rows="20">
+				   		<a4j:outputPanel id="proveedoresListOutputPanel">
+							<rich:dataTable id="proveedoresDataTable" rendered="#{not empty gestionProveedores.proveedores}" var="proveedor"
+		                                 value="#{gestionProveedores.proveedores}" rows="20">
 							    <f:facet name="header">
 					                <rich:columnGroup>
 					                    <rich:column >
@@ -79,41 +79,41 @@
 					                    </rich:column>
 					                </rich:columnGroup>
 				            	</f:facet>
-				            	<rich:column sortBy="#{cliente.razonSocial}" filterBy="#{cliente.razonSocial}" filterEvent="onkeyup">
-									<h:outputText value="#{cliente.razonSocial}"/>
+				            	<rich:column sortBy="#{proveedor.razonSocial}" filterBy="#{proveedor.razonSocial}" filterEvent="onkeyup">
+									<h:outputText value="#{proveedor.razonSocial}"/>
 								</rich:column>
-								<rich:column sortBy="#{cliente.ruc}" filterBy="#{cliente.ruc}" filterEvent="onkeyup">
-									<h:outputText value="#{cliente.ruc}" />
-								</rich:column>
-								<rich:column>
-									<h:outputText value="#{cliente.direccion}"/>
+								<rich:column sortBy="#{proveedor.ruc}" filterBy="#{proveedor.ruc}" filterEvent="onkeyup">
+									<h:outputText value="#{proveedor.ruc}" />
 								</rich:column>
 								<rich:column>
-									<h:outputText value="#{cliente.telefono}"/>
+									<h:outputText value="#{proveedor.direccion}"/>
 								</rich:column>
 								<rich:column>
-									<h:outputText value="#{cliente.telefonoMovil}"/>
+									<h:outputText value="#{proveedor.telefono}"/>
 								</rich:column>
 								<rich:column>
-									<a4j:commandButton reRender="formularioClienteModal, formularioClienteForm"
+									<h:outputText value="#{proveedor.telefonoMovil}"/>
+								</rich:column>
+								<rich:column>
+									<a4j:commandButton reRender="formularioProveedorModal, formularioProveedorForm"
 						                               id="editAction" 
-						                               action="#{gestionClientes.editar(cliente)}"
+						                               action="#{gestionProveedores.editar(proveedor)}"
 						                               image="/img/icons/edit.png"
-							  	                       oncomplete="#{rich:component('formularioClienteModal')}.show()" 
+							  	                       oncomplete="#{rich:component('formularioProveedorModal')}.show()" 
 							  	                       immediate="true"/>
-								  	<rich:toolTip value="Editar cliente" for="editAction" />
+								  	<rich:toolTip value="Editar proveedor" for="editAction" />
 								  	<rich:spacer width="2"/>
 								  	<a4j:commandButton id="deleteAction" 
-								  	                   reRender="clientesListOutputPanel"
-						                               onclick="if (!confirm('Esta usted seguro que desea borrar este cliente?')) return false"
-						                               action="#{gestionClientes.borrar(cliente)}"
+								  	                   reRender="proveedoresListOutputPanel"
+						                               onclick="if (!confirm('Esta usted seguro que desea borrar este proveedor?')) return false"
+						                               action="#{gestionProveedores.borrar(proveedor)}"
 							  	                       image="/img/icons/delete.png" 
 							  	                       ajaxSingle="true" style=" width : 16px;"/>
-								  	<rich:toolTip value="Borrar cliente" for="deleteAction"/>
+								  	<rich:toolTip value="Borrar proveedor" for="deleteAction"/>
 								</rich:column>
 							</rich:dataTable>
-		                    <rich:datascroller align="center" for="clientesDataTable" id="sc24" maxPages="10" rendered="#{not empty gestionClientes.clientes}"
-		                                        page="#{gestionClientes.pagina}" renderIfSinglePage="false"/>
+		                    <rich:datascroller align="center" for="proveedoresDataTable" id="sc24" maxPages="10" rendered="#{not empty gestionProveedores.proveedores}"
+		                                        page="#{gestionProveedores.pagina}" renderIfSinglePage="false"/>
 				     </a4j:outputPanel>
 			</rich:panel>
 	     </h:form>

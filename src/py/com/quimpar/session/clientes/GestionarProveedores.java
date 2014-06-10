@@ -13,23 +13,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import py.com.quimpar.config.QuimparApplicationContextProvider;
-import py.com.quimpar.persistence.dto.ClientesDTO;
-import py.com.quimpar.services.ClientesService;
+import py.com.quimpar.persistence.dto.ProveedoresDTO;
+import py.com.quimpar.services.ProveedoresService;
 import py.com.quimpar.session.ControllerBase;
 
-@Name("gestionClientes")
+@Name("gestionProveedores")
 @Scope(ScopeType.SESSION)
 @Restrict("#{identity.hasRole('pag:gestionarclientes')}")
-public class GestionarClientes extends ControllerBase
+public class GestionarProveedores extends ControllerBase
   implements Serializable
 {
   private static final long serialVersionUID = 8672111656377034341L;
-  private static Logger log = LoggerFactory.getLogger(GestionarClientes.class);
+  private static Logger log = LoggerFactory.getLogger(GestionarProveedores.class);
   private ApplicationContext ctx;
-  private ClientesService clientesService;
+  private ProveedoresService proveedoresService;
   private String ruc;
-  private ClientesDTO cliente;
-  private List<ClientesDTO> clientes;
+  private ProveedoresDTO proveedor;
+  private List<ProveedoresDTO> proveedores;
   private Boolean modoAgregar;
   private String tituloModal;
   private Boolean cerrar;
@@ -51,40 +51,40 @@ public class GestionarClientes extends ControllerBase
 
   private void initServices() {
     this.ctx = QuimparApplicationContextProvider.getContext();
-    this.clientesService = ((ClientesService)this.ctx.getBean("clientesService", ClientesService.class));
+    this.proveedoresService = ((ProveedoresService)this.ctx.getBean("proveedoresService", ProveedoresService.class));
   }
 
   private void initComponents() throws Exception {
     try {
-      setClientes(this.clientesService.listClientes());
+      setProveedores(this.proveedoresService.listProveedores());
       limpiarFormulario();
       setPagina(0);
     } catch (Exception e) {
-      setClientes(new ArrayList());
+      setProveedores(new ArrayList());
       log.error(e.getMessage(), e);
       FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
     }
   }
 
   public void limpiarFormulario() {
-    setCliente(new ClientesDTO());
+    setProveedor(new ProveedoresDTO());
     setModoAgregar(null);
     setTituloModal(null);
     setCerrar(Boolean.valueOf(true));
   }
 
   public void consultar() {
-    log.info("\n===========\nCONSULTAR CLIENTE!\n===========\n");
+    log.info("\n===========\nCONSULTAR PROVEEDOR!\n===========\n");
     try {
       if ((this.ruc == null) || ("".equals(this.ruc))) {
-        setClientes(this.clientesService.listClientes());
-      } else {
-        ClientesDTO cliente = this.clientesService.getClienteByRuc(this.ruc);
-        setClientes(new ArrayList<ClientesDTO>());
-        getClientes().add(cliente);
+        setProveedores(this.proveedoresService.listProveedores());
+      }
+      else {
+        setProveedores(new ArrayList());
+        getProveedores().add(this.proveedor);
       }
     } catch (Exception e) {
-      setClientes(new ArrayList<ClientesDTO>());
+      setProveedores(new ArrayList());
       log.error(e.getMessage(), e);
       FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
     }
@@ -94,31 +94,31 @@ public class GestionarClientes extends ControllerBase
   {
     limpiarFormulario();
     setModoAgregar(Boolean.valueOf(true));
-    setTituloModal("Agregar cliente");
+    setTituloModal("Agregar proveedor");
 
-    log.info("\n===========\nAGREGAR CLIENTE!\n===========\n");
-    getCliente().setRazonSocial("beatriz sandoval");
-    getCliente().setRuc("3955767");
-    getCliente().setDireccion("abetos casi los naranjos");
-    getCliente().setTelefono("021674033");
-    getCliente().setTelefonoMovil("0971888280");
-    getCliente().setEmail("mbsandoval10@gmail.com");
-    getCliente().setPais("paraguay");
-    getCliente().setContacto("contacto");
+    log.info("\n===========\nAGREGAR PROVEEDOR!\n===========\n");
+    getProveedor().setRazonSocial("jorge raul garcia");
+    getProveedor().setRuc("4489768-5");
+    getProveedor().setDireccion("san antonio");
+    getProveedor().setTelefono("021234567");
+    getProveedor().setTelefonoMovil("0981234567");
+    getProveedor().setEmail("jorgegarcia@gmail.com");
+    getProveedor().setPais("paraguay");
+    getProveedor().setContacto("contacto");
   }
 
-  public void editar(ClientesDTO cliente) {
-    log.info("\n===========\nEDITAR CLIENTE!\n===========\n");
+  public void editar(ProveedoresDTO proveedor) {
+    log.info("\n===========\nEDITAR PROVEEDOR!\n===========\n");
     limpiarFormulario();
     setModoAgregar(Boolean.valueOf(false));
-    setTituloModal("Modificar cliente");
-    setCliente(cliente);
+    setTituloModal("Modificar proveedor");
+    setProveedor(proveedor);
   }
 
-  public void borrar(ClientesDTO cliente) {
-    log.info("\n===========\nBORRAR CLIENTE!\n===========\n");
+  public void borrar(ProveedoresDTO proveedor) {
+    log.info("\n===========\nBORRAR PROVEEDOR!\n===========\n");
     try {
-      this.clientesService.deleteCliente(cliente.getId());
+      this.proveedoresService.deleteProveedor(proveedor.getId());
       initComponents();
     } catch (Exception e) {
       setCerrar(Boolean.valueOf(false));
@@ -130,11 +130,11 @@ public class GestionarClientes extends ControllerBase
   public void guardar() {
     try {
       if (getModoAgregar().booleanValue()) {
-        log.info("\n===========\nCREANDO CLIENTE!\n===========\n");
-        this.clientesService.createCliente(getCliente());
+        log.info("\n===========\nCREANDO PROVEEDOR!\n===========\n");
+        this.proveedoresService.createProveedor(getProveedor());
       } else if (!getModoAgregar().booleanValue()) {
-        log.info("\n===========\nACTUALIZANDO CLIENTE!\n{}\n===========\n", getCliente());
-        this.clientesService.updateCliente(getCliente().getId(), getCliente());
+        log.info("\n===========\nACTUALIZANDO PROVEEDOR!\n{}\n===========\n", getProveedor());
+        this.proveedoresService.updateProveedor(getProveedor().getId(), getProveedor());
       }
       initComponents();
     } catch (Exception e) {
@@ -144,20 +144,20 @@ public class GestionarClientes extends ControllerBase
     }
   }
 
-  public List<ClientesDTO> getClientes() {
-    return this.clientes;
+  public List<ProveedoresDTO> getProveedores() {
+    return this.proveedores;
   }
 
-  public void setClientes(List<ClientesDTO> clientes) {
-    this.clientes = clientes;
+  public void setProveedores(List<ProveedoresDTO> proveedores) {
+    this.proveedores = proveedores;
   }
 
-  public ClientesDTO getCliente() {
-    return this.cliente;
+  public ProveedoresDTO getProveedor() {
+    return this.proveedor;
   }
 
-  public void setCliente(ClientesDTO cliente) {
-    this.cliente = cliente;
+  public void setProveedor(ProveedoresDTO proveedor) {
+    this.proveedor = proveedor;
   }
 
   public Boolean getModoAgregar() {
@@ -194,6 +194,6 @@ public class GestionarClientes extends ControllerBase
 }
 
 /* Location:           /home/bsandoval/LABORAL/tools/jd-gui-0.3.5.linux.i686/
- * Qualified Name:     py.com.quimpar.session.clientes.GestionarClientes
+ * Qualified Name:     py.com.quimpar.session.controller.GestionarProveedores
  * JD-Core Version:    0.6.2
  */

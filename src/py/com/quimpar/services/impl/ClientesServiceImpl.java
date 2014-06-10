@@ -40,6 +40,19 @@ public class ClientesServiceImpl implements ClientesService{
 
     return cliente;
   }
+  
+  @Override
+  public ClientesDTO getClienteByRuc(String ruc) throws ServiceException {
+	if (ruc == null || "".equals(ruc))
+      throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","ruc");
+
+	ClientesDTO cliente =  clientesDAO.getClientesByRuc(ruc);
+
+    if (cliente == null)
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"cliente.notfound", ruc);
+
+    return cliente;
+  }
 
   @Override
   public void deleteCliente(Long id) throws ServiceException {

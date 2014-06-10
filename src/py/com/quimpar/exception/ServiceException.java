@@ -21,7 +21,7 @@ public class ServiceException extends Exception {
 	private ErrorCode errorCode;
 	private List<ConstraintViolation> violations;
 	private Locale locale;
-	private static final String DEFAULT_MESSAGE = "NO SE ENCUENTRA LA DESCRIPCION DEL ERROR";
+	private static final String DEFAULT_MESSAGE = "HA OCURRIDO UN ERROR";
 	
 	public ServiceException(ErrorCode errorCode) {
 		super();

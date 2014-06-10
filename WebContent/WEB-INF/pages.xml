@@ -20,6 +20,10 @@
         <action execute="#{gestionClientes.initInfo()}"/>
         <param name="initVar" value="#{gestionClientes.initVar}" />
     </page>
+    <page view-id="/gestion/proveedores.xhtml">
+        <action execute="#{gestionProveedores.initInfo()}"/>
+        <param name="initVar" value="#{gestionProveedores.initVar}" />
+    </page>
     <page view-id="/gestion/registrarBoletas.xhtml">
         <action execute="#{registrarBoletas.initInfo()}"/>
         <param name="initVar" value="#{registrarBoletas.initVar}" />

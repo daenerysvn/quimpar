@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+					"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+			    xmlns:s="http://jboss.com/products/seam/taglib"
+			    xmlns:ui="http://java.sun.com/jsf/facelets"
+			    xmlns:f="http://java.sun.com/jsf/core"
+			    xmlns:h="http://java.sun.com/jsf/html"
+			    xmlns:rich="http://richfaces.org/rich"
+			    xmlns:a4j="http://richfaces.org/a4j">
+                  
+   <h:form id="formularioClienteForm">  
+        <a4j:outputPanel ajaxRendered="true">
+           <h:messages id="idErrorModal"></h:messages>
+        </a4j:outputPanel>		   				
+	             <rich:panel id="idPanelGrales"> 
+	                     <h:panelGrid columns="1" id="panelOne">        
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Razon Social:</ui:define>
+				                   <h:inputText id="idRazonSocial"
+				                   				value="#{gestionClientes.cliente.razonSocial}" 
+				                   				required="true"
+				                   				requiredMessage="Ingrese razon social"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Ruc:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.ruc}" 
+				                   				required="true"
+				                   				requiredMessage="Ingrese ruc" 
+				                   				id="idRuc"
+				                   				disabled="#{!gestionClientes.modoAgregar}"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Direccion:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.direccion}" id="idDireccion"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Telefono:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.telefono}" id="idTelefono"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Telefono Movil:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.telefonoMovil}" id="idTelefonoMovil"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Email:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.email}" id="idEmail"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Pais:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.pais}" id="idPais"/>					
+				              </s:decorate>
+				              <s:decorate template="../layout/edit.xhtml">
+				                   <ui:define name="label">Contacto:</ui:define>
+				                   <h:inputText value="#{gestionClientes.cliente.contacto}" id="idContacto"/>					
+				              </s:decorate>
+			             </h:panelGrid>
+                     </rich:panel>       
+				     <div style="clear:both" />
+                     <div class="actionButtons" align="center">   
+						  <a4j:commandButton value="Guardar"
+						  					 process="idPanelGrales"
+						                     action="#{gestionClientes.guardar()}"  
+						                     oncomplete="if(#{gestionClientes.cerrar}) #{rich:component('formularioClienteModal')}.hide()" 
+						                     onclick="if (!confirm('Esta usted seguro que desea guardar este cliente?')) return false" 
+						                     ajaxSingle="true"
+						                     reRender="panelMessage,clientesListOutputPanel"/>
+						  <a4j:commandButton value="Cancelar" 
+						                     action="#{gestionClientes.limpiarFormulario()}" 
+						                     oncomplete="#{rich:component('formularioClienteModal')}.hide()" 
+						                     immediate="true" 
+						                     reRender="clientesListOutputPanel"/>
+		             </div>   
+   </h:form> 
+</ui:composition>    

@@ -32,7 +32,7 @@
   </select>
 
   <insert id="createProveedores" parameterType="proveedoresDTO">
-    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+    <selectKey resultType="long" keyProperty="id" order="BEFORE">
       select nextval('PROVEEDORES_id_seq')
     </selectKey>
     insert into PROVEEDORES 

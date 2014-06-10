@@ -21,13 +21,18 @@
     <include refid="selectClientes"/>
     where id = #{id}  
   </select>
+  
+  <select id="getClientesByRuc" resultType="clientesDTO" parameterType="java.lang.Long">
+    <include refid="selectClientes"/>
+    where ruc = #{ruc}  
+  </select>
 
   <select id="listClientes" resultType="clientesDTO">
     <include refid="selectClientes"/>
   </select>
 
   <insert id="createClientes" parameterType="clientesDTO">
-    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+    <selectKey resultType="long" keyProperty="id" order="BEFORE">
       select nextval('CLIENTES_id_seq')
     </selectKey>
     insert into CLIENTES 

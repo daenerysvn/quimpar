@@ -49,7 +49,9 @@
 						disabled="#{registrarBoletas.estaGrabado}">
 						<a4j:support id="a4jSupportRuc" event="onblur"
 							action="#{registrarBoletas.obtenerProveedor()}"
-							reRender="regionEncabezadoId" ajaxSingle="true" />
+							onblur="onRequestStart();"
+			     			oncomplete="onRequestEnd();"
+							reRender="regionEncabezadoId,GlobalMsg" ajaxSingle="true" />
 					</h:inputText>
 					<h:outputText value="#{registrarBoletas.proveedor.razonSocial}"
 						rendered="#{registrarBoletas.proveedor.razonSocial != null}" />
@@ -195,8 +197,8 @@
 
 				<h:commandButton id="botonGrabarId" value="Grabar"
 					action="#{registrarBoletas.grabar}"
-					onclick="return confirm('Esta seguro que los datos estan correctos? No se permite modificar la Liquidacion');"
-					rendered="#{!registrarBoletas.estaGrabado}" reRender="formReg" />
+					onclick="return confirm('Esta seguro que los datos estan correctos? No se permite modificar la Factura');"
+					rendered="#{!registrarBoletas.estaGrabado}" reRender="formReg,GlobalMsg" />
 
 
 				<h:commandButton id="botonVolverId" value="Volver"

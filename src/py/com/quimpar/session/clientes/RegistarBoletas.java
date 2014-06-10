@@ -101,22 +101,12 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 		i=1;
 		
 		productos=new ArrayList<ProductosDTO>();
-		ProductosDTO prod= new ProductosDTO();
-		prod.setDescripcion("Glucosa");
-		prod.setCodigo("gl");
-		prod.setUm("g");
-		productos.add(prod);
-		ProductosDTO prod1= new ProductosDTO();
-		prod1.setDescripcion("Acido Clorh");
-		prod1.setCodigo("acl");
-		prod1.setUm("ml");
-		productos.add(prod1);
+		productos=productosService.listProductos();
 		
 	}
 
 	public void obtenerProveedor(){
 		System.out.println("ruc: "+ruc);
-		//TODO proveedor=obtener proveedorPorRuc
 		try {
 			proveedor = proveedoresService.getProveedorByRuc(ruc);
 		} catch (ServiceException e) {
@@ -148,7 +138,7 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 		ComprasDTO compra = new ComprasDTO();
 		compra.setFechaCompra(new Date());
 		compra.setFechaFactura(fechaFactura);
-		//compra.setIdProveedor(proveedor.getId());
+		compra.setIdProveedor(proveedor.getId());
 		compra.setMontoTotal(montoTotal);
 		compra.setNroFactura(nroFactura);
 		

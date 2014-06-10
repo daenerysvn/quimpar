@@ -8,7 +8,7 @@
 		</encoder>
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>${jboss.server.log.dir}/QUIMPAR.%i.log.zip</FileNamePattern>
+			<FileNamePattern>${jboss.server.log.dir}/quimpar.%i.log.zip</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>5</MaxIndex>
 		</rollingPolicy>
@@ -19,13 +19,13 @@
 	</appender>
 	
 	<appender name="QUIMPAR_FILE_SQL" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${jboss.server.log.dir}/QUIMPAR_sql.log</file>
+		<file>${jboss.server.log.dir}/quimpar_sql.log</file>
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<Pattern>%date %level [%file:%line] %msg%n</Pattern>
 		</encoder>
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<FileNamePattern>${jboss.server.log.dir}/QUIMPAR_sql.%i.log.zip</FileNamePattern>
+			<FileNamePattern>${jboss.server.log.dir}/quimpar_sql.%i.log.zip</FileNamePattern>
 			<MinIndex>1</MinIndex>
 			<MaxIndex>5</MaxIndex>
 		</rollingPolicy>

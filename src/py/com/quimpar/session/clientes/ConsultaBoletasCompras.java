@@ -3,6 +3,7 @@ package py.com.quimpar.session.clientes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jboss.seam.ScopeType;
@@ -21,7 +22,8 @@ import py.com.quimpar.persistence.dto.ComprasDTO;
 import py.com.quimpar.persistence.dto.DetalleComprasDTO;
 import py.com.quimpar.persistence.dto.ProductosDTO;
 import py.com.quimpar.persistence.dto.ProveedoresDTO;
-import py.com.quimpar.services.ClientesService;
+import py.com.quimpar.services.ComprasService;
+import py.com.quimpar.services.ProductosService;
 import py.com.quimpar.services.ProveedoresService;
 import py.com.quimpar.session.ControllerBase;
 import py.com.quimpar.utils.Service;
@@ -53,13 +55,17 @@ public class ConsultaBoletasCompras extends ControllerBase implements Serializab
 	
 	private static Logger log = LoggerFactory.getLogger(ConsultaBoletasCompras.class);
 	private ApplicationContext ctx;
-	private ClientesService clientesService;
+	private ComprasService comprasService;
+//	private DetalleComprasService detalleComprasService;
 	private ProveedoresService proveedoresService;
+	private ProductosService productosService;
 	private ProveedoresDTO proveedor;
 	private Date fechaDesde;
 	private Date fechaHasta;
 	private List<ComprasDTO> compras;
 	private List<ProveedoresDTO> proveedores;
+	private ComprasDTO compra;
+	private List<DetalleComprasDTO> detallesCompra;
 
 	
 
@@ -79,30 +85,66 @@ public class ConsultaBoletasCompras extends ControllerBase implements Serializab
 
 	private void initServices() {
 		ctx = QuimparApplicationContextProvider.getContext();
-		clientesService = ctx.getBean(Service.CLIENTES_SERVICE,ClientesService.class);
+		comprasService = ctx.getBean(Service.COMPRAS_SERVICE,ComprasService.class);
 		proveedoresService = ctx.getBean(Service.PROVEEDORES_SERVICE,ProveedoresService.class);
+		productosService = ctx.getBean(Service.PRODUCTOS_SERVICE,ProductosService.class);
 	}
 
-	private void initComponents() throws Exception {
+	public void initComponents() throws Exception {
 		compras=new ArrayList<ComprasDTO>();
-
 		fechaDesde= new Date();
 		fechaHasta= new Date();
 		proveedor=new ProveedoresDTO();
 		proveedores= proveedoresService.listProveedores();
+		compra= new ComprasDTO();
+		detallesCompra= new ArrayList<DetalleComprasDTO>();
 		
 	}
 
 	
-	public void Buscar(){
-		//TODO
-		log.info("buscar...");
+	public void buscar(){
+		HashMap<String, Object> param= new HashMap<String, Object>();
+		param.put("desde", fechaDesde);
+		param.put("hasta", fechaHasta);
+		if (proveedor!=null && proveedor.getId()!=null){
+			param.put("proveedorId", proveedor.getId());
+		}else{
+			param.put("proveedorId", null);
+		}
+		
+		try {
+			compras=comprasService.listCompras(param);
+			ProveedoresDTO prov= new ProveedoresDTO();
+			for(ComprasDTO comp: compras){
+				prov=proveedoresService.getProveedor(comp.getIdProveedor());
+				if (prov!=null&& prov.getRazonSocial()!=null){
+					comp.setNombreProveedor( prov.getRazonSocial());
+				}
+			}
+			
+		} catch (ServiceException e) {
+			log.error(e.getMessage(), e);
+			FacesMessages.instance().addFromResourceBundle(Severity.ERROR,e.getMessage());
+		}
 	}
 	
-	
-
-	public ProveedoresDTO getProveedor() {
-		return proveedor;
+	public void obtenerDetalles(ComprasDTO dto){
+		System.out.println("obtener Detalles");
+		this.compra=dto;
+		try {
+			detallesCompra=comprasService.getDetalles(compra.getId());
+			ProductosDTO prod= new ProductosDTO();
+			for(DetalleComprasDTO det: detallesCompra){
+				prod=productosService.getProducto(det.getIdProducto());
+				if(prod!=null && prod.getDescripcion()!=null){
+					det.setDescriProducto(prod.getDescripcion());
+				}
+			}
+			System.out.println("detallesCompra.size:"+detallesCompra.size());
+		} catch (ServiceException e) {
+			log.error(e.getMessage(), e);
+			FacesMessages.instance().addFromResourceBundle(Severity.ERROR,e.getMessage());
+		}
 	}
 
 	public void setProveedor(ProveedoresDTO proveedor) {
@@ -152,5 +194,23 @@ public class ConsultaBoletasCompras extends ControllerBase implements Serializab
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+	public ComprasDTO getCompra() {
+		return compra;
+	}
+
+	public void setCompra(ComprasDTO compra) {
+		this.compra = compra;
+	}
+
+	public List<DetalleComprasDTO> getDetallesCompra() {
+		return detallesCompra;
+	}
+
+	public void setDetallesCompra(List<DetalleComprasDTO> detallesCompra) {
+		this.detallesCompra = detallesCompra;
+	}
+	
+	
 
 }

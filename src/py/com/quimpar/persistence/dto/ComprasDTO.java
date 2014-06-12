@@ -10,6 +10,7 @@ public class ComprasDTO {
 	private String nroFactura;
 	private Long montoTotal;
 	private Long idProveedor;
+	private String nombreProveedor;
 	
 	private List<DetalleComprasDTO> detalles;
 
@@ -54,6 +55,12 @@ public class ComprasDTO {
 	}
 	public void setDetalles(List<DetalleComprasDTO> detalles) {
 		this.detalles = detalles;
+	}
+	public String getNombreProveedor() {
+		return nombreProveedor;
+	}
+	public void setNombreProveedor(String nombreProveedor) {
+		this.nombreProveedor = nombreProveedor;
 	}
 
 }

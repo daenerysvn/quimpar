@@ -28,6 +28,10 @@
         <action execute="#{registrarBoletas.initInfo()}"/>
         <param name="initVar" value="#{registrarBoletas.initVar}" />
     </page>
+        <page view-id="/consulta/consultaCompras.xhtml">
+        <action execute="#{consultarBoletas.initInfo()}"/>
+        <param name="initVar" value="#{consultarBoletas.initVar}" />
+    </page>
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">
         <redirect view-id="/error.xhtml">

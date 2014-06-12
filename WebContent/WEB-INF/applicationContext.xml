@@ -99,9 +99,10 @@
 	<bean id="clientesService" class="py.com.quimpar.services.impl.ClientesServiceImpl">
 		<property name="clientesDAO"><ref bean="clientesDAO" /></property>
 	</bean>
-<!-- 	<bean id="comprasService" class="py.com.quimpar.web.services.impl.ComprasServiceImpl"> -->
-<!-- 		<property name="comprasDAO"><ref bean="comprasDAO" /></property> -->
-<!-- 	</bean> -->
+	<bean id="comprasService" class="py.com.quimpar.services.impl.ComprasServiceImpl">
+		<property name="comprasDAO"><ref bean="comprasDAO" /></property>
+		<property name="detalleComprasDAO"><ref bean="detalleComprasDAO" /></property>
+	</bean>
 <!-- 	<bean id="detalleComprasService" class="py.com.quimpar.web.services.impl.DetalleComprasServiceImpl"> -->
 <!-- 		<property name="detalleComprasDAO"><ref bean="detalleComprasDAO" /></property> -->
 <!-- 	</bean> -->

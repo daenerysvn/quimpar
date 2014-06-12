@@ -25,6 +25,14 @@
 	    		</s:link>
 	    	</rich:menuItem>
 	   	 </rich:dropDownMenu>
+	   	 
+	   	 <rich:dropDownMenu value="Consultas" rendered="#{identity.hasRole('grpmnu:gestion')}">	
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
+	    	    <s:link view="/consulta/consultaCompras.xhtml" value="Consulta de Compras">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	   	 </rich:dropDownMenu>
 	    
 	                       <!-- cabecera -->
 		<rich:toolBarGroup location="right">

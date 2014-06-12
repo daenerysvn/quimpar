@@ -47,11 +47,6 @@ public class ConsultaBoletasCompras extends ControllerBase implements Serializab
 	/**
 	 * 
 	 */
-
-	/**
-	 * 
-	 */
-
 	
 	private static Logger log = LoggerFactory.getLogger(ConsultaBoletasCompras.class);
 	private ApplicationContext ctx;

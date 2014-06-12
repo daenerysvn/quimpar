@@ -66,8 +66,8 @@
 		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.DetalleVentasDAO" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
-	<bean id="fraccionamienoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
-		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.FraccionamienoDAO" />
+	<bean id="fraccionamientoDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
+		<property name="mapperInterface" value="py.com.quimpar.persistence.dao.FraccionamientoDAO" />
 		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
 	</bean>
 	<bean id="presupuestosDAO" class="org.mybatis.spring.mapper.MapperFactoryBean">
@@ -99,9 +99,10 @@
 	<bean id="clientesService" class="py.com.quimpar.services.impl.ClientesServiceImpl">
 		<property name="clientesDAO"><ref bean="clientesDAO" /></property>
 	</bean>
-<!-- 	<bean id="comprasService" class="py.com.quimpar.web.services.impl.ComprasServiceImpl"> -->
-<!-- 		<property name="comprasDAO"><ref bean="comprasDAO" /></property> -->
-<!-- 	</bean> -->
+	<bean id="comprasService" class="py.com.quimpar.services.impl.ComprasServiceImpl">
+		<property name="comprasDAO"><ref bean="comprasDAO" /></property>
+		<property name="detalleComprasDAO"><ref bean="detalleComprasDAO" /></property>
+	</bean>
 <!-- 	<bean id="detalleComprasService" class="py.com.quimpar.web.services.impl.DetalleComprasServiceImpl"> -->
 <!-- 		<property name="detalleComprasDAO"><ref bean="detalleComprasDAO" /></property> -->
 <!-- 	</bean> -->
@@ -123,9 +124,9 @@
 	<bean id="proveedoresService" class="py.com.quimpar.services.impl.ProveedoresServiceImpl">
 		<property name="proveedoresDAO"><ref bean="proveedoresDAO" /></property>
 	</bean>
-<!-- 	<bean id="sectorService" class="py.com.quimpar.web.services.impl.SectorServiceImpl"> -->
-<!-- 		<property name="sectorDAO"><ref bean="sectorDAO" /></property> -->
-<!-- 	</bean> -->
+	<bean id="sectorService" class="py.com.quimpar.services.impl.SectorServiceImpl">
+		<property name="sectorDAO"><ref bean="sectorDAO" /></property>
+	</bean>
 <!-- 	<bean id="stockService" class="py.com.quimpar.web.services.impl.StockServiceImpl"> -->
 <!-- 		<property name="stockDAO"><ref bean="stockDAO" /></property> -->
 <!-- 	</bean> -->

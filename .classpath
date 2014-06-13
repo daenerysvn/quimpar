@@ -71,5 +71,7 @@
 	<classpathentry kind="lib" path="lib/jsf-api-1.2_12.jar"/>
 	<classpathentry kind="lib" path="lib/jsf-impl-1.2_12.jar"/>
 	<classpathentry kind="lib" path="lib/servlet-api-6.0.33.jar"/>
+	<classpathentry kind="lib" path="lib/aopalliance-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/spring-aop-3.1.1.RELEASE.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -27,16 +27,58 @@ public class ProductosServiceImpl implements ProductosService{
 
     return productos;
   }
+  
+  @Override
+  public List<ProductosDTO> getProductosLikeCodigo(String codigo) throws ServiceException {
+	if (codigo == null || "".equals(codigo))
+	   throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","codigo");
+	
+	StringBuffer sb = new StringBuffer("%");
+	sb.append(codigo).append("%");
+	  
+	List<ProductosDTO> productos =  productosDAO.getProductosLikeCodigo(sb.toString());
+
+    if (productos == null || productos.size() == 0)
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"productos.list.notfound");
+
+    return productos;
+  }
 
   @Override
   public ProductosDTO getProducto(Long id) throws ServiceException {
     if (id == null || id <= 0)
       throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","id");
 
-    ProductosDTO producto =  productosDAO.getProductosById(id);
+    ProductosDTO producto =  productosDAO.getProductoById(id);
 
     if (producto == null)
-      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"productos.notfound", id);
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"producto.notfound", id);
+    
+    return producto;
+  }
+  
+  @Override
+  public ProductosDTO getProductobyCodigo(String codigo) throws ServiceException {
+	if (codigo == null || "".equals(codigo))
+	  throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","codigo");
+	
+	ProductosDTO producto =  productosDAO.getProductoByCodigo(codigo);
+	
+	if (producto == null)
+	  throw new ServiceException(ErrorCode.NO_DATA_FOUND,"producto.notfound", codigo);
+	
+	return producto;
+  }
+  
+  @Override
+  public ProductosDTO getProductoComposite(Long id) throws ServiceException {
+    if (id == null || id <= 0)
+      throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","id");
+
+    ProductosDTO producto =  productosDAO.getProductoCompositeById(id);
+
+    if (producto == null)
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"producto.notfound", id);
     
     return producto;
   }
@@ -46,10 +88,10 @@ public class ProductosServiceImpl implements ProductosService{
     if (id == null || id <= 0)
       throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","id");
 
-    ProductosDTO productos =  productosDAO.getProductosById(id);
+    ProductosDTO productos =  productosDAO.getProductoById(id);
 
     if(productos == null)
-      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"productos.notfound", id);
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"producto.notfound", id);
 
     try {
       productosDAO.deleteProductos(productos);
@@ -68,10 +110,10 @@ public class ProductosServiceImpl implements ProductosService{
     if (null == data || "".equals(data))
       throw new ServiceException(ErrorCode.PARAMETER_ERROR,"parameter.error.null","data");
 
-    ProductosDTO productos = productosDAO.getProductosById(id);
+    ProductosDTO productos = productosDAO.getProductoById(id);
 
     if (productos == null)
-      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"productos.notfound", id);
+      throw new ServiceException(ErrorCode.NO_DATA_FOUND,"producto.notfound", id);
     
     productosDAO.updateProductos(productos);
 

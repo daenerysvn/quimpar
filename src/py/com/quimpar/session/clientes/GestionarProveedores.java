@@ -23,8 +23,12 @@ import py.com.quimpar.session.ControllerBase;
 public class GestionarProveedores extends ControllerBase
   implements Serializable
 {
-  private static final long serialVersionUID = 8672111656377034341L;
-  private static Logger log = LoggerFactory.getLogger(GestionarProveedores.class);
+	
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2427402265358438812L;
+private static Logger log = LoggerFactory.getLogger(GestionarProveedores.class);
   private ApplicationContext ctx;
   private ProveedoresService proveedoresService;
   private String ruc;
@@ -45,24 +49,24 @@ public class GestionarProveedores extends ControllerBase
       setInitVar("N");
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
   private void initServices() {
-    this.ctx = QuimparApplicationContextProvider.getContext();
-    this.proveedoresService = ((ProveedoresService)this.ctx.getBean("proveedoresService", ProveedoresService.class));
+    ctx = QuimparApplicationContextProvider.getContext();
+    proveedoresService = ((ProveedoresService)ctx.getBean("proveedoresService", ProveedoresService.class));
   }
 
   private void initComponents() throws Exception {
     try {
-      setProveedores(this.proveedoresService.listProveedores());
+      setProveedores(proveedoresService.listProveedores());
       limpiarFormulario();
       setPagina(0);
     } catch (Exception e) {
-      setProveedores(new ArrayList());
+      setProveedores(new ArrayList<ProveedoresDTO>());
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -76,17 +80,17 @@ public class GestionarProveedores extends ControllerBase
   public void consultar() {
     log.info("\n===========\nCONSULTAR PROVEEDOR!\n===========\n");
     try {
-      if ((this.ruc == null) || ("".equals(this.ruc))) {
-        setProveedores(this.proveedoresService.listProveedores());
+      if ((ruc == null) || ("".equals(ruc))) {
+        setProveedores(proveedoresService.listProveedores());
       }
       else {
-        setProveedores(new ArrayList());
-        getProveedores().add(this.proveedor);
+        setProveedores(new ArrayList<ProveedoresDTO>());
+        getProveedores().add(proveedor);
       }
     } catch (Exception e) {
-      setProveedores(new ArrayList());
+      setProveedores(new ArrayList<ProveedoresDTO>());
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -118,12 +122,12 @@ public class GestionarProveedores extends ControllerBase
   public void borrar(ProveedoresDTO proveedor) {
     log.info("\n===========\nBORRAR PROVEEDOR!\n===========\n");
     try {
-      this.proveedoresService.deleteProveedor(proveedor.getId());
+      proveedoresService.deleteProveedor(proveedor.getId());
       initComponents();
     } catch (Exception e) {
       setCerrar(Boolean.valueOf(false));
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -131,16 +135,16 @@ public class GestionarProveedores extends ControllerBase
     try {
       if (getModoAgregar().booleanValue()) {
         log.info("\n===========\nCREANDO PROVEEDOR!\n===========\n");
-        this.proveedoresService.createProveedor(getProveedor());
+        proveedoresService.createProveedor(getProveedor());
       } else if (!getModoAgregar().booleanValue()) {
         log.info("\n===========\nACTUALIZANDO PROVEEDOR!\n{}\n===========\n", getProveedor());
-        this.proveedoresService.updateProveedor(getProveedor().getId(), getProveedor());
+        proveedoresService.updateProveedor(getProveedor().getId(), getProveedor());
       }
       initComponents();
     } catch (Exception e) {
       setCerrar(Boolean.valueOf(false));
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 

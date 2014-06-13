@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="py.com.quimpar.persistence.dao.FraccionamientoDAO">
+  <sql id="selectFraccionamiento">
+    select 
+		id id, 
+		codigo codigo, 
+		descripcion descripcion
+    from  FRACCIONAMIENTO
+  </sql>
+
+  <select id="getFraccionamientoById" resultType="fraccionamientoDTO" parameterType="java.lang.Long">
+    <include refid="selectFraccionamiento"/>
+    where id = #{id}  
+  </select>
+
+  <select id="listFraccionamiento" resultType="fraccionamientoDTO">
+    <include refid="selectFraccionamiento"/>
+  </select>
+
+  <insert id="createFraccionamiento" parameterType="fraccionamientoDTO">
+    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+      select nextval('FRACCIONAMIENTO_id_seq')
+    </selectKey>
+    insert into FRACCIONAMIENTO 
+      (
+		id, 
+		codigo, 
+		descripcion
+      )
+    values
+      (
+		#{id}, 
+		#{codigo}, 
+		#{descripcion}
+      ) 
+  </insert>
+
+  <delete id="deleteFraccionamiento" parameterType="fraccionamientoDTO">
+    delete from 
+      FRACCIONAMIENTO
+    where 
+      id = #{id}  
+  </delete>
+
+  <update id="updateFraccionamiento" parameterType="fraccionamientoDTO">
+    update FRACCIONAMIENTO 
+    set 
+		codigo = #{codigo}, 
+		descripcion = #{descripcion}
+    where 
+      id = #{id}
+  </update>
+
+</mapper>

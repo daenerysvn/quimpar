@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<typeAlias alias="detalleComprasDTO" type="py.com.quimpar.persistence.dto.DetalleComprasDTO" />
 		<typeAlias alias="detallePresupuestosDTO" type="py.com.quimpar.persistence.dto.DetallePresupuestosDTO" />
 		<typeAlias alias="detalleVentasDTO" type="py.com.quimpar.persistence.dto.DetalleVentasDTO" />
-		<typeAlias alias="fraccionamienoDTO" type="py.com.quimpar.persistence.dto.FraccionamienoDTO" />
+		<typeAlias alias="fraccionamientoDTO" type="py.com.quimpar.persistence.dto.FraccionamientoDTO" />
 		<typeAlias alias="presupuestosDTO" type="py.com.quimpar.persistence.dto.PresupuestosDTO" />
 		<typeAlias alias="productosDTO" type="py.com.quimpar.persistence.dto.ProductosDTO" />
 		<typeAlias alias="proveedoresDTO" type="py.com.quimpar.persistence.dto.ProveedoresDTO" />
@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/detallecompras.xml" />
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/detallepresupuestos.xml" />
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/detalleventas.xml" />
-		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/fraccionamieno.xml" />
+		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/fraccionamiento.xml" />
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/presupuestos.xml" />
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/productos.xml" />
 		<mapper resource="py/com/quimpar/persistence/mybatis/mapper/proveedores.xml" />

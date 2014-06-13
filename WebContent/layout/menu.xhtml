@@ -20,7 +20,20 @@
 	    		</s:link>
 	    	</rich:menuItem>
 	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
+	    	    <s:link view="/gestion/productos.xhtml" value="Gestionar Productos">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
 	    	    <s:link view="/gestion/registrarBoletas.xhtml" value="Registrar Compras">
+	    		   <f:param value="S" name="initVar"/>
+	    		</s:link>
+	    	</rich:menuItem>
+	   	 </rich:dropDownMenu>
+	   	 
+	   	 <rich:dropDownMenu value="Consultas" rendered="#{identity.hasRole('grpmnu:gestion')}">	
+	    	<rich:menuItem submitMode="none" rendered="#{identity.hasRole('pag:gestionarclientes')}">
+	    	    <s:link view="/consulta/consultaCompras.xhtml" value="Consulta de Compras">
 	    		   <f:param value="S" name="initVar"/>
 	    		</s:link>
 	    	</rich:menuItem>

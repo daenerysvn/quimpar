@@ -24,7 +24,7 @@
   </select>
 
   <insert id="createCompras" parameterType="comprasDTO">
-    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+    <selectKey resultType="long" keyProperty="id" order="BEFORE">
       select nextval('COMPRAS_id_seq')
     </selectKey>
     insert into COMPRAS 

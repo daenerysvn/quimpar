@@ -3,21 +3,40 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="py.com.quimpar.persistence.dao.SectorDAO">
+
+	<resultMap type="sectorDTO" id="sectorMap">
+		<constructor>
+			<idArg column="id" javaType="long"/>
+		</constructor>
+		<result property="codigo" column="codigo" javaType="string"/>
+		<result property="descripcion" column="descripcion" javaType="string"/>
+		<result property="idFraccionamiento" column="idFraccionamiento" javaType="long"/>
+		<association property="fraccionamiento" column="idFraccionamiento" javaType="fraccionamientoDTO">
+			<id property="id" column="idFraccionamiento" javaType="long"/>
+			<result property="codigo" column="fCodigo" javaType="string"/>
+			<result property="descripcion" column="fDescripcion" javaType="string"/>
+		</association>
+	</resultMap>
+	
   <sql id="selectSector">
     select 
-		id id, 
-		codigo codigo, 
-		descripcion descripcion, 
-		id_fraccionamiento idFraccionamiento
-    from  SECTOR
+		s.id id, 
+		s.codigo codigo, 
+		s.descripcion descripcion, 
+		s.id_fraccionamiento idFraccionamiento,
+		f.id fId,
+		f.codigo fCodigo,
+		f.descripcion fDescripcion
+    from  SECTOR s
+    join fraccionamiento f on s.id_fraccionamiento = f.id
   </sql>
 
-  <select id="getSectorById" resultType="sectorDTO" parameterType="java.lang.Long">
+  <select id="getSectorById" resultMap="sectorMap" parameterType="java.lang.Long">
     <include refid="selectSector"/>
-    where id = #{id}  
+    where s.id = #{id}  
   </select>
 
-  <select id="listSector" resultType="sectorDTO">
+  <select id="listSector" resultMap="sectorMap">
     <include refid="selectSector"/>
   </select>
 

@@ -22,6 +22,7 @@ import py.com.quimpar.persistence.dto.DetalleComprasDTO;
 import py.com.quimpar.persistence.dto.ProductosDTO;
 import py.com.quimpar.persistence.dto.ProveedoresDTO;
 import py.com.quimpar.services.ClientesService;
+import py.com.quimpar.services.ComprasService;
 import py.com.quimpar.services.ProductosService;
 import py.com.quimpar.services.ProveedoresService;
 import py.com.quimpar.session.ControllerBase;
@@ -53,6 +54,7 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 	private ClientesService clientesService;
 	private ProveedoresService proveedoresService;
 	private ProductosService productosService;
+	private ComprasService comprasService;
 	private String ruc;
 	private String nroFactura;
 	private ProveedoresDTO proveedor;
@@ -89,19 +91,22 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 		clientesService = ctx.getBean(Service.CLIENTES_SERVICE,ClientesService.class);
 		proveedoresService = ctx.getBean(Service.PROVEEDORES_SERVICE,ProveedoresService.class);
 		productosService = ctx.getBean(Service.PRODUCTOS_SERVICE,ProductosService.class);
+		comprasService = ctx.getBean(Service.COMPRAS_SERVICE,ComprasService.class);
 	}
 
 	private void initComponents() throws Exception {
 		detalles=new ArrayList<DetalleComprasDTO>();
+		nroFactura="";
 		montoTotal=0L;
 		montoSuma=0L;
 		ruc="";
 		fechaFactura= new Date();
 		estaGrabado=false;
 		i=1;
-		
+		proveedor= new ProveedoresDTO();
 		productos=new ArrayList<ProductosDTO>();
 		productos=productosService.listProductos();
+		estaGrabado=false;
 		
 	}
 
@@ -110,6 +115,7 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 		try {
 			proveedor = proveedoresService.getProveedorByRuc(ruc);
 		} catch (ServiceException e) {
+			proveedor= new ProveedoresDTO();
 			log.error(e.getMessage(), e);
 			FacesMessages.instance().addFromResourceBundle(Severity.ERROR,e.getMessage());
 		}
@@ -143,7 +149,16 @@ public class RegistarBoletas extends ControllerBase implements Serializable {
 		compra.setNroFactura(nroFactura);
 		
 		compra.setDetalles(detalles);
-		estaGrabado=true;
+		
+		try {
+			compra = comprasService.createCompras(compra);
+			estaGrabado=true;
+			FacesMessages.instance().addFromResourceBundle(Severity.INFO,"REGISTRO EXITOSO");
+		} catch (ServiceException e) {
+			log.error(e.getMessage(), e);
+			FacesMessages.instance().addFromResourceBundle(Severity.ERROR,e.getMessage());
+		}
+		
 	}
 	
 	public void calcularTotal(){

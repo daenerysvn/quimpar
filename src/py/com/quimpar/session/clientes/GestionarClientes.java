@@ -45,24 +45,24 @@ public class GestionarClientes extends ControllerBase
       setInitVar("N");
     } catch (Exception e) {
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
   private void initServices() {
-    this.ctx = QuimparApplicationContextProvider.getContext();
-    this.clientesService = ((ClientesService)this.ctx.getBean("clientesService", ClientesService.class));
+    ctx = QuimparApplicationContextProvider.getContext();
+    clientesService = ((ClientesService)this.ctx.getBean("clientesService", ClientesService.class));
   }
 
   private void initComponents() throws Exception {
     try {
-      setClientes(this.clientesService.listClientes());
+      setClientes(clientesService.listClientes());
       limpiarFormulario();
       setPagina(0);
     } catch (Exception e) {
-      setClientes(new ArrayList());
+      setClientes(new ArrayList<ClientesDTO>());
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -76,17 +76,17 @@ public class GestionarClientes extends ControllerBase
   public void consultar() {
     log.info("\n===========\nCONSULTAR CLIENTE!\n===========\n");
     try {
-      if ((this.ruc == null) || ("".equals(this.ruc))) {
-        setClientes(this.clientesService.listClientes());
+      if ((ruc == null) || ("".equals(ruc))) {
+        setClientes(clientesService.listClientes());
       } else {
-        ClientesDTO cliente = this.clientesService.getClienteByRuc(this.ruc);
+        ClientesDTO cliente = clientesService.getClienteByRuc(ruc);
         setClientes(new ArrayList<ClientesDTO>());
         getClientes().add(cliente);
       }
     } catch (Exception e) {
       setClientes(new ArrayList<ClientesDTO>());
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -118,12 +118,12 @@ public class GestionarClientes extends ControllerBase
   public void borrar(ClientesDTO cliente) {
     log.info("\n===========\nBORRAR CLIENTE!\n===========\n");
     try {
-      this.clientesService.deleteCliente(cliente.getId());
+      clientesService.deleteCliente(cliente.getId());
       initComponents();
     } catch (Exception e) {
       setCerrar(Boolean.valueOf(false));
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 
@@ -131,7 +131,7 @@ public class GestionarClientes extends ControllerBase
     try {
       if (getModoAgregar().booleanValue()) {
         log.info("\n===========\nCREANDO CLIENTE!\n===========\n");
-        this.clientesService.createCliente(getCliente());
+        clientesService.createCliente(getCliente());
       } else if (!getModoAgregar().booleanValue()) {
         log.info("\n===========\nACTUALIZANDO CLIENTE!\n{}\n===========\n", getCliente());
         this.clientesService.updateCliente(getCliente().getId(), getCliente());
@@ -140,7 +140,7 @@ public class GestionarClientes extends ControllerBase
     } catch (Exception e) {
       setCerrar(Boolean.valueOf(false));
       log.error(e.getMessage(), e);
-      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage(), new Object[0]);
+      FacesMessages.instance().addFromResourceBundle(Severity.ERROR, e.getMessage());
     }
   }
 

@@ -1,0 +1,192 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:s="http://jboss.com/products/seam/taglib"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j" template="/layout/template.xhtml">
+
+	<ui:define name="varProjectName">
+		<ui:param name="projectName"
+			value="#{appRes['quimpar.manage.clientes']}" />
+	</ui:define>
+
+	<ui:define name="body">
+		<rich:modalPanel id="detalleModalId" width="670" height="670"
+			resizeable="false">
+			<h1>Detalles Factura #{consultarBoletas.compra.nroFactura} : </h1>
+			<rich:separator height="1" lineType="solid" />
+			<br />
+				<h:form id="formModalId">
+				<a4j:outputPanel>
+
+					<rich:dataTable id="detallesListId"
+						value="#{consultarBoletas.detallesCompra}" var="detalle" width="100%"
+						columnsWidth="40%,10%,15%,10%,10%,10%">
+
+						<f:facet name="header">
+
+							<rich:columnGroup>
+
+								<h:column>
+									<h:outputText value="Descripcion" styleClass="columnHeader" />
+								</h:column>
+								<h:column>
+									<h:outputText value="Lote" styleClass="columnHeader" />
+								</h:column>
+								<h:column>
+									<h:outputText value="Vencimiento" styleClass="columnHeader" />
+								</h:column>
+
+								<h:column>
+									<h:outputText value="Cantidad" styleClass="columnHeader" />
+								</h:column>
+
+								<h:column>
+									<h:outputText value="Precio Unit" styleClass="columnHeader" />
+								</h:column>
+								<h:column>
+									<h:outputText value="Precio Total" styleClass="columnHeader" />
+								</h:column>
+
+							</rich:columnGroup>
+
+						</f:facet>
+
+						<rich:column>
+							<h:outputText value="#{detalle.descriProducto}" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{detalle.lote}"/>
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{detalle.vencimiento}" locale="es_PY"
+							datePattern="dd/MM/yyyy"/>
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{detalle.cantidad}" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{detalle.precioCompra}"  />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{detalle.precioCompra*detalle.cantidad}"
+								style="width:100px">
+							</h:outputText>
+						</rich:column>
+						
+					</rich:dataTable>
+					<rich:datascroller align="center" for="detallesListId" id="scDetalles"
+						maxPages="10" rendered="#{not empty consultarBoletas.detallesCompra}"
+						page="#{consultarBoletas.pagina}" renderIfSinglePage="false" />
+
+				
+				</a4j:outputPanel>
+				</h:form>
+
+				<h:panelGrid id="seccionBotonesModalId" columns="1">
+
+					<a4j:commandButton value="Cerrar">
+						<rich:componentControl for="detalleModalId" operation="hide"
+							event="onclick" />
+					</a4j:commandButton>
+
+				</h:panelGrid>
+		</rich:modalPanel>
+
+		<h1>#{messages['quimpar.manage.consultarBoletas']}</h1>
+		<h:form id="formConsulta">
+			<rich:panel id="mainPanel">
+				<a4j:outputPanel id="regionEncabezadoId">
+
+					<h:panelGrid columns="5">
+
+						<h:outputText value="Fecha Desde:" />
+						<rich:calendar value="#{consultarBoletas.fechaDesde}"
+							enableManualInput="true" popup="true" inputSize="11" id="fechaDesdeId"
+							required="true" locale="es_PY"
+							inputClass="text input_mask mask_date_us"
+							datePattern="dd/MM/yyyy">
+
+						</rich:calendar>
+						<div style="clear: both; height: 20px" />
+						<h:outputText value="Fecha Hasta:" />
+						<rich:calendar value="#{consultarBoletas.fechaHasta}"
+							enableManualInput="true" popup="true" inputSize="11" id="fechaHastaId"
+							required="true" locale="es_PY"
+							inputClass="text input_mask mask_date_us"
+							datePattern="dd/MM/yyyy">
+
+						</rich:calendar>
+
+
+					</h:panelGrid>
+
+					<div class="actionButtons">
+						<center>
+							<a4j:commandButton id="btnConsultarU" styleClass="button"
+								reRender="comprasOutputPanel,comprasListId,panelMessage"
+								value="Consultar" action="#{consultarBoletas.buscar()}"
+								onclick="onRequestStart();" oncomplete="onRequestEnd();" />
+							<a4j:commandButton id="btnCancel" styleClass="button"
+								reRender="comprasOutputPanel,comprasListId,panelMessage"
+								value="Cancelar" action="#{consultarBoletas.initComponents()}" />
+						</center>
+					</div>
+				</a4j:outputPanel>
+				<div style="clear: both; height: 20px" />
+
+				<a4j:outputPanel id="comprasOutputPanel">
+					<rich:dataTable id="comprasListId"
+						rendered="#{not empty consultarBoletas.compras}" var="compra"
+						value="#{consultarBoletas.compras}"
+						width="100%"
+						columnsWidth="15%,10%,20%,10%">
+						<f:facet name="header">
+							<rich:columnGroup>
+								<rich:column>
+									<h:outputText value="Nro. Factura" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="Fecha" locale="es_PY"
+							datePattern="dd/MM/yyyy"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="Proveedor" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="Monto" />
+								</rich:column>
+							</rich:columnGroup>
+						</f:facet>
+
+						<rich:column>
+							<a4j:commandLink value="#{compra.nroFactura}" 
+							action="#{consultarBoletas.obtenerDetalles(compra)}" 
+							oncomplete="#{rich:component('detalleModalId')}.show()"
+							reRender="detalleModalId,formModalId"/>
+
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{compra.fechaFactura}" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{compra.nombreProveedor}" />
+						</rich:column>
+						<rich:column>
+							<h:outputText value="#{compra.montoTotal}" />
+						</rich:column>
+
+					</rich:dataTable>
+					<rich:datascroller align="center" for="comprasListId"
+						rendered="#{not empty consultarBoletas.compras}" id="sc24"
+						maxPages="10" page="#{consultarBoletas.pagina}"
+						renderIfSinglePage="false" />
+				</a4j:outputPanel>
+			</rich:panel>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

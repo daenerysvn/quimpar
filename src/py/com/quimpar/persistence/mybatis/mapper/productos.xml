@@ -3,6 +3,31 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="py.com.quimpar.persistence.dao.ProductosDAO">
+
+	
+	<resultMap type="productosDTO" id="productosCompositeMap">
+		<constructor>
+			<idArg column="id" javaType="long"/>
+		</constructor>
+		<result property="codigo" column="codigo" javaType="string"/>
+		<result property="descripcion" column="descripcion" javaType="string"/>
+		<result property="stockMinimo" column="stockMinimo" javaType="long"/>
+		<result property="cantidadFraccionamiento" column="cantidadFraccionamiento" javaType="long"/>
+		<result property="factorGanancia" column="factorGanancia" javaType="long"/>
+		<result property="idSector" column="idSector" javaType="long"/>
+		<association property="sector" column="idSector" javaType="sectorDTO">
+			<id property="id" column="idSector" javaType="long"/>
+			<result property="codigo" column="sCodigo" javaType="string"/>
+			<result property="descripcion" column="sDescripcion" javaType="string"/>
+			<result property="idFraccionamiento" column="sIdFraccionamiento" javaType="long"/>
+			<association property="fraccionamiento" column="sIdFraccionamiento" javaType="fraccionamientoDTO">
+				<id property="id" column="sIdFraccionamiento" javaType="long"/>
+				<result property="codigo" column="fCodigo" javaType="string"/>
+				<result property="descripcion" column="fDescripcion" javaType="string"/>
+			</association>
+		</association>
+	</resultMap>
+  
   <sql id="selectProductos">
     select 
 		id id, 
@@ -14,18 +39,51 @@
 		id_sector idSector
     from  PRODUCTOS
   </sql>
+  
+  <sql id="selectProductosComposite">
+    select 
+		p.id id, 
+		p.codigo codigo, 
+		p.descripcion descripcion, 
+		p.stock_minimo stockMinimo, 
+		p.cantidad_fraccionamiento cantidadFraccionamiento, 
+		p.factor_ganancia factorGanancia, 
+		p.id_sector idSector,
+		s.id sId,
+		s.codigo sCodigo,
+		s.descripcion sDescripcion,
+		s.id_fraccionamiento sIdFraccionamiento,
+		f.id fId,
+		f.codigo fCodigo,
+		f.descripcion fDescripcion
+    from  PRODUCTOS p
+    join sector s on p.id_sector = s.id
+    join fraccionamiento f on s.id_fraccionamiento = f.id
+  </sql>
 
-  <select id="getProductosById" resultType="productosDTO" parameterType="java.lang.Long">
+  <select id="getProductoById" resultType="productosDTO" parameterType="java.lang.Long">
     <include refid="selectProductos"/>
     where id = #{id}  
   </select>
+  <select id="getProductoByCodigo" resultMap="productosCompositeMap" parameterType="string">
+    <include refid="selectProductosComposite"/>
+    where p.codigo = #{codigo}  
+  </select>
+  <select id="getProductoCompositeById" resultMap="productosCompositeMap" parameterType="java.lang.Long">
+    <include refid="selectProductosComposite"/>
+    where p.id = #{id}  
+  </select>
 
-  <select id="listProductos" resultType="productosDTO">
-    <include refid="selectProductos"/>
+  <select id="listProductos" resultMap="productosCompositeMap">
+    <include refid="selectProductosComposite"/>
+  </select>
+  <select id="getProductosLikeCodigo" resultMap="productosCompositeMap" parameterType="string">
+    <include refid="selectProductosComposite"/>
+    where p.codigo like #{codigo}
   </select>
 
   <insert id="createProductos" parameterType="productosDTO">
-    <selectKey resultType="integer" keyProperty="id" order="BEFORE">
+    <selectKey resultType="long" keyProperty="id" order="BEFORE">
       select nextval('PRODUCTOS_id_seq')
     </selectKey>
     insert into PRODUCTOS 

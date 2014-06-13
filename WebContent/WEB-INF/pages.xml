@@ -24,9 +24,17 @@
         <action execute="#{gestionProveedores.initInfo()}"/>
         <param name="initVar" value="#{gestionProveedores.initVar}" />
     </page>
+    <page view-id="/gestion/productos.xhtml">
+        <action execute="#{gestionProductos.initInfo()}"/>
+        <param name="initVar" value="#{gestionProductos.initVar}" />
+    </page>
     <page view-id="/gestion/registrarBoletas.xhtml">
         <action execute="#{registrarBoletas.initInfo()}"/>
         <param name="initVar" value="#{registrarBoletas.initVar}" />
+    </page>
+        <page view-id="/consulta/consultaCompras.xhtml">
+        <action execute="#{consultarBoletas.initInfo()}"/>
+        <param name="initVar" value="#{consultarBoletas.initVar}" />
     </page>
 
     <exception class="org.jboss.seam.framework.EntityNotFoundException">

@@ -1,6 +1,7 @@
 package py.com.quimpar.persistence.dao;
 
 import java.util.List;
+
 import py.com.quimpar.persistence.dto.DetalleComprasDTO;
 
 public interface DetalleComprasDAO {
@@ -9,4 +10,5 @@ public interface DetalleComprasDAO {
   int createDetalleCompras(DetalleComprasDTO dto);
   int deleteDetalleCompras(DetalleComprasDTO dto);
   int updateDetalleCompras(DetalleComprasDTO dto);
+  List<DetalleComprasDTO> getDetallesByCabecera(Long idCompra);
 }

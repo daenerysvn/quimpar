@@ -1,0 +1,128 @@
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+			    xmlns:s="http://jboss.com/products/seam/taglib"
+			    xmlns:ui="http://java.sun.com/jsf/facelets"
+			    xmlns:f="http://java.sun.com/jsf/core"
+			    xmlns:h="http://java.sun.com/jsf/html"
+			    xmlns:rich="http://richfaces.org/rich"
+			    xmlns:a4j="http://richfaces.org/a4j"
+			    template="/layout/template.xhtml">
+	
+	<ui:define name="varProjectName">
+		<ui:param name="projectName" value="#{appRes['quimpar.manage.productos']}"/>
+	</ui:define>
+
+	<ui:define name="body">	
+		 <rich:modalPanel id="formularioProductoModal" width="670" height="400" resizeable="false">
+	        <f:facet name="header">
+	            <h:panelGroup>
+	                <h:outputText value="#{gestionProductos.tituloModal}" ></h:outputText>
+	            </h:panelGroup>
+	        </f:facet>
+	        <f:facet name="controls">
+		        <span style="cursor:pointer" onclick="javascript:Richfaces.hideModalPanel('formularioProductoModal')">X</span>
+		    </f:facet>
+	        <h:panelGroup id="formularioProductoInclude">        
+                  <a4j:include viewId="/gestion/formularioProducto.xhtml" />
+	        </h:panelGroup>
+	    </rich:modalPanel>
+	    
+	    <h:form id="formProductos"> 
+				<rich:panel id="filtroProductosOutputPanel" header="Gestionar Productos"> 					 		
+							<s:decorate template="../layout/edit.xhtml">
+                                  <ui:define name="label">Codigo:</ui:define>
+						          <h:inputText value="#{gestionProductos.codigo}" id="rucInput"/>                
+                            </s:decorate>
+						    <div style="clear:both" />
+							<div class="actionButtons">
+							     <center>
+									<a4j:commandButton id="btnConsultarU" 
+									                   styleClass="button"
+													   reRender="productosListOutputPanel,productosDataTable,panelMessage,formProductos" 
+													   value="Consultar"  
+													   action="#{gestionProductos.consultar()}" 
+													   onclick="onRequestStart();"
+										   			   oncomplete="onRequestEnd();"/>
+									<a4j:commandButton reRender="formularioProductoModal, formularioProductoForm"
+									                   value="Nuevo" 
+						                               id="newAction" 
+						                               action="#{gestionProductos.nuevo()}"
+							  	                       oncomplete="#{rich:component('formularioProductoModal')}.show()" 
+							  	                       immediate="true"/>	
+							     </center>
+							</div>
+						    <div style="clear:both; height: 20px"/>
+			         	
+				   		<a4j:outputPanel id="productosListOutputPanel">
+							<rich:dataTable id="productosDataTable" rendered="#{not empty gestionProductos.productos}" var="producto"
+		                                 value="#{gestionProductos.productos}" rows="20">
+							    <f:facet name="header">
+					                <rich:columnGroup>
+					                    <rich:column >
+					                        <h:outputText value="Codigo"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Descripcion"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Stock minimo"/>
+					                    </rich:column>
+					                    <rich:column >
+					                        <h:outputText value="Cantidad fracc."/>
+					                    </rich:column>
+					                    <rich:column>
+					                        <h:outputText value="Sector"/>
+					                    </rich:column>
+					                    <rich:column>
+					                        <h:outputText value="Fraccionamiento"/>
+					                    </rich:column>
+					                    <rich:column>
+					                        <h:outputText value="Acciones"/>
+					                    </rich:column>
+					                </rich:columnGroup>
+				            	</f:facet>
+				            	<rich:column sortBy="#{producto.codigo}" filterBy="#{producto.codigo}" filterEvent="onkeyup">
+									<h:outputText value="#{producto.codigo}"/>
+								</rich:column>
+								<rich:column sortBy="#{producto.descripcion}" filterBy="#{producto.descripcion}" filterEvent="onkeyup">
+									<h:outputText value="#{producto.descripcion}" />
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{producto.stockMinimo}"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{producto.cantidadFraccionamiento}"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{producto.sector.descripcion}"/>
+								</rich:column>
+								<rich:column>
+									<h:outputText value="#{producto.sector.fraccionamiento.descripcion}"/>
+								</rich:column>
+								<rich:column>
+									<a4j:commandButton reRender="formularioProductoModal, formularioProductoForm"
+						                               id="editAction" 
+						                               action="#{gestionProductos.editar(producto)}"
+						                               image="/img/icons/edit.png"
+							  	                       oncomplete="#{rich:component('formularioProductoModal')}.show()" 
+							  	                       immediate="true"/>
+								  	<rich:toolTip value="Editar producto" for="editAction" />
+								  	<rich:spacer width="2"/>
+								  	<a4j:commandButton id="deleteAction" 
+								  	                   reRender="productosListOutputPanel"
+						                               onclick="if (!confirm('Esta usted seguro que desea borrar este producto?')) return false"
+						                               action="#{gestionProductos.borrar(producto)}"
+							  	                       image="/img/icons/delete.png" 
+							  	                       ajaxSingle="true" style=" width : 16px;"/>
+								  	<rich:toolTip value="Borrar producto" for="deleteAction"/>
+								</rich:column>
+							</rich:dataTable>
+		                    <rich:datascroller align="center" for="productosDataTable" id="sc24" maxPages="10" rendered="#{not empty gestionProductos.productos}"
+		                                        page="#{gestionProductos.pagina}" renderIfSinglePage="false"/>
+				     </a4j:outputPanel>
+			</rich:panel>
+	     </h:form>
+    </ui:define>
+    
+</ui:composition>
